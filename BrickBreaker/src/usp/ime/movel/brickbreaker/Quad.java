@@ -20,22 +20,22 @@ class Quad {
          1.0f,  1.0f,
     };
     
-    private static final float[] colors = {
-        0.0f,  0.0f,  0.0f,  1.0f,
-        1.0f,  0.0f,  0.0f,  1.0f,
-        0.0f,  0.0f,  1.0f,  1.0f,
-        0.0f,  1.0f,  0.0f,  1.0f,
-    };
-    
     private static final int FLOAT_SIZE_BYTES = Float.SIZE / 8;
     
     
-    public Quad() {
+    public Quad(float r, float g, float b) {
         ByteBuffer vbb = ByteBuffer.allocateDirect( vertices.length * FLOAT_SIZE_BYTES );
         vbb.order( ByteOrder.nativeOrder() );
         vertexBuffer = vbb.asFloatBuffer();
         vertexBuffer.put( vertices );
         vertexBuffer.position( 0 );
+        
+        float[] colors = {
+        	r, g, b, 1.0f,
+        	r, g, b, 1.0f,
+        	r, g, b, 1.0f,
+        	r, g, b, 1.0f,
+        };
 
         ByteBuffer cbb = ByteBuffer.allocateDirect( colors.length * FLOAT_SIZE_BYTES );
         cbb.order( ByteOrder.nativeOrder() );
