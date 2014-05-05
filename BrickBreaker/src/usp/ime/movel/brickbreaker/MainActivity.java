@@ -1,4 +1,4 @@
-package com.demo;
+package usp.ime.movel.brickbreaker;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;

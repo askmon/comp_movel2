@@ -1,4 +1,4 @@
-package com.demo;
+package usp.ime.movel.brickbreaker;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

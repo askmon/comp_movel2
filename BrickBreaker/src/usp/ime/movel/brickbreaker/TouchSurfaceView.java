@@ -1,4 +1,4 @@
-package com.demo;
+package usp.ime.movel.brickbreaker;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
