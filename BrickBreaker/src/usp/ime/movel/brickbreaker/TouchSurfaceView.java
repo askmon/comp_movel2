@@ -23,9 +23,12 @@ class TouchSurfaceView extends GLSurfaceView {
     private class Renderer implements GLSurfaceView.Renderer {
 
         private Quad quad;
+        private Context context;
 
 
-        public Renderer() {
+        public Renderer(Context context) {
+        	this.context = context;
+
             quad = new Quad(0.2f, 0.4f, 0.8f);
         }
 
@@ -55,6 +58,9 @@ class TouchSurfaceView extends GLSurfaceView {
 
         @Override
         public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
+        	quad.loadGLTexture(gl, this.context);
+        	gl.glEnable(GL10.GL_TEXTURE_2D);	
+        	gl.glShadeModel(GL10.GL_SMOOTH); 	
             gl.glDisable( GL10.GL_DITHER );
             gl.glHint( GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST );
 
@@ -78,7 +84,7 @@ class TouchSurfaceView extends GLSurfaceView {
 
     public TouchSurfaceView( Context context ) {
         super( context );
-        renderer = new Renderer();
+        renderer = new Renderer(context);
         setRenderer( renderer );
     }
 
