@@ -3,6 +3,8 @@ package usp.ime.movel.brickbreaker.graphics;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -12,12 +14,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 public class Sprite {
 
 	private Geometry geom;
 	private FloatBuffer vertexBuffer;
-	private int[] textures = new int[1];
+	
 
 	private static final float[] vertices = {
 		-1.0f, -1.0f,
@@ -36,6 +39,11 @@ public class Sprite {
 	private int texture_id;
 
 	private static final int FLOAT_SIZE_BYTES = Float.SIZE / 8;
+	private static final int MAX_TEXTURE_NUM = 32;
+
+	private static int[] textures = new int[MAX_TEXTURE_NUM];
+	private static int next_texture = 0;
+	private static Map<Integer,Integer> texture_cache = new HashMap<Integer,Integer>();
 
 	public Sprite(Geometry geom, int texture_id) {
 		this.geom = geom;
@@ -68,14 +76,21 @@ public class Sprite {
 	}
 
 	public void loadGLTexture(GL10 gl, Context context) {
+		if (next_texture >= MAX_TEXTURE_NUM) {
+			Log.e("Sprite", "No more textures!");
+			return;
+		}
+		if (texture_cache.containsKey(this.texture_id)) return;
 		// loading texture
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
 				this.texture_id);
 
 		// generate one texture pointer
-		gl.glGenTextures(1, textures, 0);
+		gl.glGenTextures(1, textures, next_texture++);
 		// ...and bind it to our array
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[next_texture]);
+		
+		texture_cache.put(this.texture_id, next_texture);
 		
 		// create nearest filtered texture
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
@@ -95,7 +110,7 @@ public class Sprite {
 		gl.glTranslatef(this.geom.getX(), this.geom.getY(), 0.0f);
 		gl.glScalef(this.geom.getWidth(), this.geom.getHeight(), 0.5f);
 		
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[texture_cache.get(texture_id)]);
 		
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
