@@ -2,3 +2,4 @@
 *.apk
 /resources.ap_
 /dexedLibs
+*.dex

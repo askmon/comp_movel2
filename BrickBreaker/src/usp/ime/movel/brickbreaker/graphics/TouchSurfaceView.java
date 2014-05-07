@@ -1,5 +1,7 @@
 package usp.ime.movel.brickbreaker.graphics;
 
+import java.util.Calendar;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -24,16 +26,34 @@ public class TouchSurfaceView extends GLSurfaceView {
 
         private Sprite quad;
         private Context context;
-
+		private float previous_time;
+		private float lag;
+		
+		private static final float TIME_PER_FRAME = 1.0f/30.0f;
 
         public Renderer(Context context) {
         	this.context = context;
+            this.lag = 0.0f;
             quad = new Sprite();
+        }
+        
+        private float currentTime() {
+        	return Calendar.getInstance().getTimeInMillis()/1000.0f;
         }
 
 
         @Override
         public void onDrawFrame( GL10 gl ) {
+        	float current = currentTime();
+        	float elapsed = current - this.previous_time;
+        	this.previous_time = current;
+        	this.lag += elapsed;
+        	
+        	while (lag >= TIME_PER_FRAME) {
+        		// update
+        		lag -= TIME_PER_FRAME;
+        	}
+        	
             gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
             quad.draw( gl );
         }
@@ -67,6 +87,8 @@ public class TouchSurfaceView extends GLSurfaceView {
             gl.glDisable( GL10.GL_CULL_FACE );
             gl.glShadeModel( GL10.GL_SMOOTH );
             gl.glDisable( GL10.GL_DEPTH_TEST );
+            
+            this.previous_time = currentTime();
         }
 
 
