@@ -73,6 +73,10 @@ public class Sprite {
 	public void move(float dx, float dy) {
 		this.geom.setPosition(this.geom.getX()+dx, this.geom.getY()+dy);
 	}
+	
+	public void setShape(float width, float height) {
+		this.geom.setShape(width, height);
+	}
 
 	public void loadGLTexture(GL10 gl, Context context) {
 		if (next_texture >= MAX_TEXTURE_NUM) {
@@ -123,5 +127,10 @@ public class Sprite {
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
 		gl.glPopMatrix();
+	}
+
+	public static void clearCache() {
+		texture_cache.clear();
+		next_texture = 0;
 	}
 }

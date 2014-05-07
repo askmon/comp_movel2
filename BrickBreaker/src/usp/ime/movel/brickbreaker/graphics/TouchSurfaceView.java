@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import usp.ime.movel.brickbreaker.game.Entity;
+import usp.ime.movel.brickbreaker.game.EntityFactory;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
@@ -34,7 +35,7 @@ public class TouchSurfaceView extends GLSurfaceView {
         public Renderer(Context context) {
         	this.context = context;
             this.lag = 0.0f;
-            this.ball = new Entity(new Sprite());
+            this.ball = new EntityFactory().makeBall();
             quad = new Sprite();
         }
         
@@ -79,6 +80,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 
         @Override
         public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
+        	Sprite.clearCache();
+        	ball.getSprite().loadGLTexture(gl, this.context);
         	quad.loadGLTexture(gl, this.context);
         	gl.glEnable(GL10.GL_TEXTURE_2D);	
         	gl.glShadeModel(GL10.GL_SMOOTH); 	
