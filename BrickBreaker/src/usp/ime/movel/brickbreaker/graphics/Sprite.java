@@ -1,4 +1,4 @@
-package usp.ime.movel.brickbreaker;
+package usp.ime.movel.brickbreaker.graphics;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -12,7 +12,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
-import usp.ime.movel.brickbreaker.graphics.Geometry;
 
 class Sprite {
 

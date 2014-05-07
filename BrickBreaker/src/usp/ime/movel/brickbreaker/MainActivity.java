@@ -1,5 +1,6 @@
 package usp.ime.movel.brickbreaker;
 
+import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;

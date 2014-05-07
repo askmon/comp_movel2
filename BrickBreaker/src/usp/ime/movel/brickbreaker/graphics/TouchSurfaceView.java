@@ -1,4 +1,4 @@
-package usp.ime.movel.brickbreaker;
+package usp.ime.movel.brickbreaker.graphics;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -9,7 +9,7 @@ import android.opengl.GLU;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
 
-class TouchSurfaceView extends GLSurfaceView {
+public class TouchSurfaceView extends GLSurfaceView {
 
     private Renderer renderer;
     
