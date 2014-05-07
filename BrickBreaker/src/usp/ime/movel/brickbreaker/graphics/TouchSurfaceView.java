@@ -5,10 +5,12 @@ import java.util.Calendar;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import usp.ime.movel.brickbreaker.game.Entity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class TouchSurfaceView extends GLSurfaceView {
@@ -25,6 +27,7 @@ public class TouchSurfaceView extends GLSurfaceView {
     private class Renderer implements GLSurfaceView.Renderer {
 
         private Sprite quad;
+        private Entity ball;
         private Context context;
 		private float previous_time;
 		private float lag;
@@ -34,13 +37,13 @@ public class TouchSurfaceView extends GLSurfaceView {
         public Renderer(Context context) {
         	this.context = context;
             this.lag = 0.0f;
+            this.ball = new Entity(new Sprite());
             quad = new Sprite();
         }
         
         private float currentTime() {
-        	return Calendar.getInstance().getTimeInMillis()/1000.0f;
+        	return (float) (System.nanoTime()/10.0e9);
         }
-
 
         @Override
         public void onDrawFrame( GL10 gl ) {
@@ -51,11 +54,13 @@ public class TouchSurfaceView extends GLSurfaceView {
         	
         	while (lag >= TIME_PER_FRAME) {
         		// update
+        		ball.update();
         		lag -= TIME_PER_FRAME;
         	}
         	
             gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-            quad.draw( gl );
+            quad.draw(gl);
+            ball.getSprite().draw(gl);
         }
 
 

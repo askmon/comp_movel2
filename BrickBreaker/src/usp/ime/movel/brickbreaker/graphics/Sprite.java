@@ -13,7 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
 
-class Sprite {
+public class Sprite {
 
 	private Geometry geom;
 	private FloatBuffer vertexBuffer;
@@ -61,6 +61,10 @@ class Sprite {
 
 	public void setPosition(float x, float y) {
 		this.geom.setPosition(x, y);
+	}
+	
+	public void move(float dx, float dy) {
+		this.geom.setPosition(this.geom.getX()+dx, this.geom.getY()+dy);
 	}
 
 	public void loadGLTexture(GL10 gl, Context context) {
