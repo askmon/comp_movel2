@@ -22,14 +22,13 @@ class TouchSurfaceView extends GLSurfaceView {
 
     private class Renderer implements GLSurfaceView.Renderer {
 
-        private Quad quad;
+        private Sprite quad;
         private Context context;
 
 
         public Renderer(Context context) {
         	this.context = context;
-
-            quad = new Quad(0.2f, 0.4f, 0.8f);
+            quad = new Sprite();
         }
 
 

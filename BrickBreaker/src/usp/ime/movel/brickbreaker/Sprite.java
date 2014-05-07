@@ -14,12 +14,11 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 
-class Quad {
+class Sprite {
 
 	private Geometry geom;
-
 	private FloatBuffer vertexBuffer;
-	private FloatBuffer colorBuffer;
+	private int[] textures = new int[1];
 
 	private static final float[] vertices = {
 		-1.0f, -1.0f,
@@ -35,11 +34,13 @@ class Quad {
 			1.0f, 1.0f,		// top right	(V4)
 			1.0f, 0.0f		// bottom right	(V3)
 	};
+	private int texture_id;
 
 	private static final int FLOAT_SIZE_BYTES = Float.SIZE / 8;
 
-	public Quad(float r, float g, float b) {
-		this.geom = new Geometry();
+	public Sprite(Geometry geom, int texture_id) {
+		this.geom = geom;
+		this.texture_id = texture_id;
 
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length
 				* FLOAT_SIZE_BYTES);
@@ -53,19 +54,20 @@ class Quad {
 		textureBuffer = vbb.asFloatBuffer();
 		textureBuffer.put(texture);
 		textureBuffer.position(0);
-
+	}
+	
+	public Sprite() {
+		this(new Geometry(), R.drawable.pikachu);
 	}
 
 	public void setPosition(float x, float y) {
 		this.geom.setPosition(x, y);
 	}
 
-	private int[] textures = new int[1];
-
 	public void loadGLTexture(GL10 gl, Context context) {
 		// loading texture
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.pikachu);
+				this.texture_id);
 
 		// generate one texture pointer
 		gl.glGenTextures(1, textures, 0);
