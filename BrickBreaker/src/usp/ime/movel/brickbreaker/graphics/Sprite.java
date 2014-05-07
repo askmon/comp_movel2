@@ -5,11 +5,9 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.microedition.khronos.opengles.GL10;
-
 import com.demo.R;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +41,7 @@ public class Sprite {
 
 	private static int[] textures = new int[MAX_TEXTURE_NUM];
 	private static int next_texture = 0;
+	@SuppressLint("UseSparseArrays")
 	private static Map<Integer,Integer> texture_cache = new HashMap<Integer,Integer>();
 
 	public Sprite(Geometry geom, int texture_id) {

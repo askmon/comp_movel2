@@ -3,7 +3,6 @@ package usp.ime.movel.brickbreaker.game;
 import java.util.Calendar;
 import java.util.Random;
 
-import android.util.Log;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 
 public class Entity {
