@@ -1,17 +1,20 @@
 package usp.ime.movel.brickbreaker;
 
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
+
 import com.demo.R;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends Activity {
 
     private GLSurfaceView glSurfaceView;
-    MediaPlayer music;
+    private MediaPlayer music;
+    private int last_music_pos;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -22,8 +25,7 @@ public class MainActivity extends Activity {
         
         glSurfaceView.requestFocus();
         glSurfaceView.setFocusableInTouchMode( true );
-        music = MediaPlayer.create(MainActivity.this, R.raw.cinderela );
-        music.start();
+        last_music_pos = 0;
     }
 
 
@@ -31,6 +33,11 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         glSurfaceView.onResume();
+        music = MediaPlayer.create(MainActivity.this, R.raw.cinderela );
+        if (last_music_pos > 0) {
+        	music.seekTo(last_music_pos);
+        	Log.i("Music seeking back to ", ""+last_music_pos);
+        }
         music.start();
     }
 
@@ -38,7 +45,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        last_music_pos = music.getCurrentPosition();
         music.stop();
+        music.release();
+        music = null;
         glSurfaceView.onPause();
     }
 }

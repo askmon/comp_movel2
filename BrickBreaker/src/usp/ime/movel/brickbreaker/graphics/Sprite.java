@@ -6,7 +6,6 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.microedition.khronos.opengles.GL10;
-import com.demo.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -47,7 +46,6 @@ public class Sprite {
 	public Sprite(Geometry geom, int texture_id) {
 		this.geom = geom;
 		this.texture_id = texture_id;
-		System.out.println(texture_id);
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length
 				* FLOAT_SIZE_BYTES);
 		vbb.order(ByteOrder.nativeOrder());
@@ -114,7 +112,6 @@ public class Sprite {
 		gl.glTranslatef(this.geom.getX(), this.geom.getY(), 0.0f);
 		gl.glScalef(this.geom.getWidth(), this.geom.getHeight(), 0.5f);
 		
-		System.out.println("texture:" + texture_cache.get(texture_id));
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[texture_cache.get(texture_id)]);
 		
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);

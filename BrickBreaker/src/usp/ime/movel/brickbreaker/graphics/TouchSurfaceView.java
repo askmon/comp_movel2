@@ -38,8 +38,9 @@ public class TouchSurfaceView extends GLSurfaceView {
         public Renderer(Context context) {
         	this.context = context;
             this.lag = 0.0f;
-            this.ball = new EntityFactory().makeBall();
-            this.background = new EntityFactory().makeBackground();
+            EntityFactory factory = new EntityFactory();
+            this.ball = factory.makeBall();
+            this.background = factory.makeBackground();
             quad = new Sprite(R.drawable.pikachu);
 
         }
