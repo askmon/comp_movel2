@@ -3,6 +3,8 @@ package usp.ime.movel.brickbreaker.graphics;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.demo.R;
+
 import usp.ime.movel.brickbreaker.game.Entity;
 import usp.ime.movel.brickbreaker.game.EntityFactory;
 import android.content.Context;
@@ -26,6 +28,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
         private Sprite quad;
         private Entity ball;
+        private Entity background;
         private Context context;
 		private float previous_time;
 		private float lag;
@@ -35,8 +38,9 @@ public class TouchSurfaceView extends GLSurfaceView {
         public Renderer(Context context) {
         	this.context = context;
             this.lag = 0.0f;
-            this.ball = new EntityFactory().makeBall();
-            quad = new Sprite();
+            this.background = new EntityFactory().makeBackground(R.drawable.city);
+            this.ball = new EntityFactory().makeBall(R.drawable.pikachu);
+            quad = new Sprite(R.drawable.pikachu);
         }
         
         private float currentTime() {
@@ -57,6 +61,7 @@ public class TouchSurfaceView extends GLSurfaceView {
         	}
         	
             gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
+            background.getSprite().draw(gl);
             quad.draw(gl);
             ball.getSprite().draw(gl);
         }
@@ -81,6 +86,7 @@ public class TouchSurfaceView extends GLSurfaceView {
         @Override
         public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
         	Sprite.clearCache();
+        	background.getSprite().loadGLTexture(gl, this.context);
         	ball.getSprite().loadGLTexture(gl, this.context);
         	quad.loadGLTexture(gl, this.context);
         	gl.glEnable(GL10.GL_TEXTURE_2D);	

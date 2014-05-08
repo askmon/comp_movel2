@@ -47,7 +47,7 @@ public class Sprite {
 	public Sprite(Geometry geom, int texture_id) {
 		this.geom = geom;
 		this.texture_id = texture_id;
-
+		System.out.println(texture_id);
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length
 				* FLOAT_SIZE_BYTES);
 		vbb.order(ByteOrder.nativeOrder());
@@ -62,8 +62,8 @@ public class Sprite {
 		textureBuffer.position(0);
 	}
 	
-	public Sprite() {
-		this(new Geometry(), R.drawable.pikachu);
+	public Sprite(int id) {
+		this(new Geometry(), id);
 	}
 
 	public void setPosition(float x, float y) {
@@ -87,6 +87,7 @@ public class Sprite {
 		// loading texture
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
 				this.texture_id);
+		System.out.println(this.texture_id);
 
 		// generate one texture pointer
 		gl.glGenTextures(1, textures, next_texture++);
