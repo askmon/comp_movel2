@@ -5,8 +5,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.demo.R;
 
+import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.game.Entity;
-import usp.ime.movel.brickbreaker.game.EntityFactory;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
@@ -27,8 +27,8 @@ public class TouchSurfaceView extends GLSurfaceView {
     private class Renderer implements GLSurfaceView.Renderer {
 
         private Sprite quad;
+        private Sprite background;
         private Entity ball;
-        private Entity background;
         private Context context;
 		private float previous_time;
 		private float lag;
@@ -38,11 +38,9 @@ public class TouchSurfaceView extends GLSurfaceView {
         public Renderer(Context context) {
         	this.context = context;
             this.lag = 0.0f;
-            EntityFactory factory = new EntityFactory();
-            this.ball = factory.makeBall();
-            this.background = factory.makeBackground();
-            quad = new Sprite(R.drawable.pikachu);
-
+            this.ball = new BallEntity();
+            this.quad = new Sprite(R.drawable.pikachu);
+            this.background = new Sprite(R.drawable.city);
         }
         
         private float currentTime() {
@@ -58,12 +56,12 @@ public class TouchSurfaceView extends GLSurfaceView {
         	
         	while (lag >= TIME_PER_FRAME) {
         		// update
-        		ball.update();
+        		ball.onUpdate();
         		lag -= TIME_PER_FRAME;
         	}
         	
             gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-            background.getSprite().draw(gl);
+            background.draw(gl);
             quad.draw(gl);
             ball.getSprite().draw(gl);
         }
@@ -82,6 +80,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 
             Matrix.orthoM( unprojectProjMatrix, 0, -ratio, ratio, -1.0f, 1.0f, -1.0f, 1.0f );
             Matrix.setIdentityM( unprojectViewMatrix, 0 );
+            
+            background.setShape(ratio, 1.0f);
         }
 
 
@@ -90,7 +90,7 @@ public class TouchSurfaceView extends GLSurfaceView {
         	Sprite.clearCache();
         	ball.getSprite().loadGLTexture(gl, this.context);
         	quad.loadGLTexture(gl, this.context);
-            background.getSprite().loadGLTexture(gl, this.context);
+            background.loadGLTexture(gl, this.context);
 
         	gl.glEnable(GL10.GL_TEXTURE_2D);	
         	gl.glShadeModel(GL10.GL_SMOOTH); 	

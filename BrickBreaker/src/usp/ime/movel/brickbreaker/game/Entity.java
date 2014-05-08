@@ -5,7 +5,7 @@ import java.util.Random;
 
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 
-public class Entity {
+public abstract class Entity {
 
 	private Sprite sprite;
 
@@ -13,13 +13,7 @@ public class Entity {
 		this.sprite = sprite;
 	}
 	
-	public void update() {
-		Random rng = new Random();
-		rng.setSeed(Calendar.getInstance().getTimeInMillis());
-		float dx = rng.nextFloat()/100.0f - 0.005f;
-		float dy = rng.nextFloat()/100.0f - 0.005f;
-		this.sprite.move(dx, dy);
-	}
+	public abstract void onUpdate();
 	
 	public Sprite getSprite() {
 		return this.sprite;
