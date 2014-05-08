@@ -11,6 +11,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class TouchSurfaceView extends GLSurfaceView {
@@ -33,7 +34,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 		private float previous_time;
 		private float lag;
 		
-		private static final float TIME_PER_FRAME = 1.0f/30.0f;
+		private static final float TIME_PER_FRAME = 1000.0f/30.0f;
 
         public Renderer(Context context) {
         	this.context = context;
@@ -44,7 +45,7 @@ public class TouchSurfaceView extends GLSurfaceView {
         }
         
         private float currentTime() {
-        	return (float) (System.nanoTime()/10.0e9);
+        	return (float) (System.nanoTime()/1.0e6);
         }
 
         @Override
@@ -56,7 +57,7 @@ public class TouchSurfaceView extends GLSurfaceView {
         	
         	while (lag >= TIME_PER_FRAME) {
         		// update
-        		ball.onUpdate();
+        		ball.onUpdate(TouchSurfaceView.this);
         		lag -= TIME_PER_FRAME;
         	}
         	
@@ -117,6 +118,13 @@ public class TouchSurfaceView extends GLSurfaceView {
         }
     }
 
+    public float getSpaceWidth() {
+    	return (float) screenWidth / screenHeight;
+    }
+    
+    public float getSpaceHeight() {
+    	return 1.0f;
+    }
 
     public TouchSurfaceView( Context context ) {
         super( context );

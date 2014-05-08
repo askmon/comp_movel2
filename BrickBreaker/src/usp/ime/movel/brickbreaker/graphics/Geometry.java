@@ -31,6 +31,11 @@ public class Geometry {
 		this.y = y;
 	}
 	
+	public void translate(float dx, float dy) {
+		this.x += dx;
+		this.y += dy;
+	}
+	
 	public float getWidth() {
 		return this.width;
 	}

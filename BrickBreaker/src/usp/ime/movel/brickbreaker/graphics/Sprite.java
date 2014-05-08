@@ -63,13 +63,13 @@ public class Sprite {
 	public Sprite(int id) {
 		this(new Geometry(), id);
 	}
+	
+	public Geometry getGeometry() {
+		return this.geom;
+	}
 
 	public void setPosition(float x, float y) {
 		this.geom.setPosition(x, y);
-	}
-	
-	public void move(float dx, float dy) {
-		this.geom.setPosition(this.geom.getX()+dx, this.geom.getY()+dy);
 	}
 	
 	public void setShape(float width, float height) {

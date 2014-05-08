@@ -1,9 +1,7 @@
 package usp.ime.movel.brickbreaker.game;
 
-import java.util.Calendar;
-import java.util.Random;
-
 import usp.ime.movel.brickbreaker.graphics.Sprite;
+import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 
 public abstract class Entity {
 
@@ -13,7 +11,7 @@ public abstract class Entity {
 		this.sprite = sprite;
 	}
 	
-	public abstract void onUpdate();
+	public abstract void onUpdate(TouchSurfaceView view);
 	
 	public Sprite getSprite() {
 		return this.sprite;

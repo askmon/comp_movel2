@@ -1,6 +1,7 @@
 package usp.ime.movel.brickbreaker.game;
 
 import usp.ime.movel.brickbreaker.graphics.Sprite;
+import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 
 import com.demo.R;
 
@@ -11,7 +12,7 @@ public class BatEntity extends Entity {
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate(TouchSurfaceView view) {
 		// TODO Auto-generated method stub
 
 	}
