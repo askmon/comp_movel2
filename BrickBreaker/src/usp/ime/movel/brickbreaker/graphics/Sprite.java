@@ -87,10 +87,9 @@ public class Sprite {
 		// loading texture
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
 				this.texture_id);
-		System.out.println(this.texture_id);
 
 		// generate one texture pointer
-		gl.glGenTextures(1, textures, next_texture++);
+		gl.glGenTextures(1, textures, next_texture);
 		// ...and bind it to our array
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[next_texture]);
 		
@@ -105,6 +104,7 @@ public class Sprite {
 		
 		// Clean up
 		bitmap.recycle();
+		next_texture++;
 	}
 	
 	public void draw(GL10 gl) {
@@ -114,6 +114,7 @@ public class Sprite {
 		gl.glTranslatef(this.geom.getX(), this.geom.getY(), 0.0f);
 		gl.glScalef(this.geom.getWidth(), this.geom.getHeight(), 0.5f);
 		
+		System.out.println("texture:" + texture_cache.get(texture_id));
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[texture_cache.get(texture_id)]);
 		
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);

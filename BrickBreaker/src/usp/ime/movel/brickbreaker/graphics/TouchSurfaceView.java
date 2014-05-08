@@ -38,9 +38,10 @@ public class TouchSurfaceView extends GLSurfaceView {
         public Renderer(Context context) {
         	this.context = context;
             this.lag = 0.0f;
-            this.background = new EntityFactory().makeBackground(R.drawable.city);
             this.ball = new EntityFactory().makeBall(R.drawable.pikachu);
             quad = new Sprite(R.drawable.pikachu);
+            this.background = new EntityFactory().makeBackground(R.drawable.city);
+
         }
         
         private float currentTime() {
@@ -86,9 +87,10 @@ public class TouchSurfaceView extends GLSurfaceView {
         @Override
         public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
         	Sprite.clearCache();
-        	background.getSprite().loadGLTexture(gl, this.context);
         	ball.getSprite().loadGLTexture(gl, this.context);
         	quad.loadGLTexture(gl, this.context);
+            background.getSprite().loadGLTexture(gl, this.context);
+
         	gl.glEnable(GL10.GL_TEXTURE_2D);	
         	gl.glShadeModel(GL10.GL_SMOOTH); 	
             gl.glDisable( GL10.GL_DITHER );
@@ -98,6 +100,7 @@ public class TouchSurfaceView extends GLSurfaceView {
             gl.glDisable( GL10.GL_CULL_FACE );
             gl.glShadeModel( GL10.GL_SMOOTH );
             gl.glDisable( GL10.GL_DEPTH_TEST );
+            
             
             this.previous_time = currentTime();
         }
