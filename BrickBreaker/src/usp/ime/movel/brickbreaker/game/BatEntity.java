@@ -12,9 +12,11 @@ public class BatEntity extends Entity implements OnTouchMotionListener {
 	private float last_x;
 
 	public BatEntity() {
-		super(new Sprite(new Geometry(0.0f, -0.7f, 0.1f, 0.02f),
+		super(new Sprite(new Geometry(0.0f, -0.7f, 0.1f, 0.1f),
 				R.drawable.pikachu));
 		this.last_x = 0.0f;
+		Geometry geom = getSprite().getGeometry(); 
+		geom.setCollision(0.0f, 0, geom.getOuterRadius());
 	}
 
 	@Override

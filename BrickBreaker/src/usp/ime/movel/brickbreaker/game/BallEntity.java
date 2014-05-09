@@ -65,10 +65,13 @@ public class BallEntity extends Entity {
 	private void collideWithBat(Geometry bat_geom) {
 		Geometry geom = getSprite().getGeometry();
 		float dx = geom.getX() - bat_geom.getX();
-		//float dy = geom.getY() - bat_geom.getY();
-		speed_x += dx*2.0f;
-		speed_y *= -1;
-		normalizeSpeed();
+		float dy = geom.getY() - bat_geom.getY();
+		float angle = (float) Math.atan2(dy, dx);
+		float speed_angle = (float) (Math.atan2(speed_y, speed_x) + Math.PI);
+		float angle_diff = speed_angle - angle;
+		float bounce_angle = angle - angle_diff;
+		speed_x = (float) Math.cos(bounce_angle);
+		speed_y = (float) Math.sin(bounce_angle);
 		ploc.seekTo(0);
 		ploc.start();
 	}
