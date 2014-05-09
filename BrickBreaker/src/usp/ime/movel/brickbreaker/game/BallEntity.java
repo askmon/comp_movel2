@@ -1,8 +1,5 @@
 package usp.ime.movel.brickbreaker.game;
 
-import java.util.Calendar;
-import java.util.Random;
-
 import com.demo.R;
 
 import usp.ime.movel.brickbreaker.graphics.Geometry;
@@ -18,11 +15,8 @@ public class BallEntity extends Entity {
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.pikachu));
-		Random rng = new Random();
-		rng.setSeed(Calendar.getInstance().getTimeInMillis());
-		double dir = (float) (rng.nextFloat() * 2 * Math.PI);
-		this.speed_x = (float) (INITIAL_SPEED * Math.cos(dir));
-		this.speed_y = (float) (INITIAL_SPEED * Math.sin(dir));
+		this.speed_x = 0.0f;
+		this.speed_y = -INITIAL_SPEED;
 	}
 
 	@Override

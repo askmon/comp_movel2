@@ -1,5 +1,6 @@
 package usp.ime.movel.brickbreaker;
 
+import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 
 import com.demo.R;
@@ -12,7 +13,7 @@ import android.util.Log;
 
 public class MainActivity extends Activity {
 
-    private GLSurfaceView glSurfaceView;
+    private TouchSurfaceView glSurfaceView;
     private MediaPlayer music;
     private int last_music_pos;
 
@@ -24,7 +25,9 @@ public class MainActivity extends Activity {
         setContentView( glSurfaceView );
         
         glSurfaceView.requestFocus();
-        glSurfaceView.setFocusableInTouchMode( true );
+        glSurfaceView.setFocusableInTouchMode(true);
+        glSurfaceView.addEntity(new BallEntity());
+        
         last_music_pos = 0;
     }
 
