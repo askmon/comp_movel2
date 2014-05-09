@@ -8,13 +8,11 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.demo.R;
 
-import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.game.Entity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class TouchSurfaceView extends GLSurfaceView {
@@ -28,12 +26,14 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private float[] unprojectProjMatrix = new float[16];
 
 	private List<Entity> entities;
+	private List<OnTouchMotionListener> touch_listeners;
 
 	public TouchSurfaceView(Context context) {
 		super(context);
 		renderer = new Renderer(context);
 		setRenderer(renderer);
 		entities = new LinkedList<Entity>();
+		touch_listeners = new LinkedList<OnTouchMotionListener>();
 	}
 
 	public float getSpaceWidth() {
@@ -43,14 +43,18 @@ public class TouchSurfaceView extends GLSurfaceView {
 	public float getSpaceHeight() {
 		return 1.0f;
 	}
-	
+
 	public void addEntity(Entity entity) {
 		entities.add(entity);
+		entity.onGameAdd(this);
+	}
+	
+	public void addOnTouchMotionListener(OnTouchMotionListener listener) {
+		touch_listeners.add(listener);
 	}
 
 	private class Renderer implements GLSurfaceView.Renderer {
 
-		private Sprite quad;
 		private Sprite background;
 		private Context context;
 		private float previous_time;
@@ -61,7 +65,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 		public Renderer(Context context) {
 			this.context = context;
 			this.lag = 0.0f;
-			this.quad = new Sprite(R.drawable.pikachu);
 			this.background = new Sprite(R.drawable.city);
 		}
 
@@ -85,7 +88,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			background.draw(gl);
-			quad.draw(gl);
 			for (Entity entity : entities)
 				entity.getSprite().draw(gl);
 		}
@@ -113,7 +115,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 			Sprite.clearCache();
 			for (Entity entity : entities)
 				entity.getSprite().loadGLTexture(gl, this.context);
-			quad.loadGLTexture(gl, this.context);
 			background.loadGLTexture(gl, this.context);
 
 			gl.glEnable(GL10.GL_TEXTURE_2D);
@@ -133,7 +134,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {
-					quad.setPosition(x, y);
+					for (OnTouchMotionListener listener : touch_listeners)
+						listener.onMotionTouch(x, y);
 				}
 			});
 		}

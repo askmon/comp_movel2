@@ -1,6 +1,7 @@
 package usp.ime.movel.brickbreaker;
 
 import usp.ime.movel.brickbreaker.game.BallEntity;
+import usp.ime.movel.brickbreaker.game.BatEntity;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 
 import com.demo.R;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
         glSurfaceView.requestFocus();
         glSurfaceView.setFocusableInTouchMode(true);
         glSurfaceView.addEntity(new BallEntity());
+        glSurfaceView.addEntity(new BatEntity());
         
         last_music_pos = 0;
     }

@@ -11,6 +11,8 @@ public abstract class Entity {
 		this.sprite = sprite;
 	}
 	
+	public abstract void onGameAdd(TouchSurfaceView view);
+	
 	public abstract void onUpdate(TouchSurfaceView view);
 	
 	public Sprite getSprite() {

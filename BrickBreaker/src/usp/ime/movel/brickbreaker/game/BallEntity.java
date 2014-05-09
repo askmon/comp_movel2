@@ -39,4 +39,9 @@ public class BallEntity extends Entity {
 		}
 	}
 
+	@Override
+	public void onGameAdd(TouchSurfaceView view) {
+		// nothing
+	}
+
 }
