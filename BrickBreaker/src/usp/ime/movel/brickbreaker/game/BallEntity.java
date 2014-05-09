@@ -76,10 +76,4 @@ public class BallEntity extends Entity {
 		ploc.start();
 	}
 	
-	private void normalizeSpeed() {
-		float length = (float) Math.sqrt(speed_x*speed_x + speed_y*speed_y);
-		speed_x /= length;
-		speed_y /= length;
-	}
-	
 }

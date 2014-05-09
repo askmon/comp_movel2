@@ -19,6 +19,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class TouchSurfaceView extends GLSurfaceView {
@@ -32,14 +33,14 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private float[] unprojectProjMatrix = new float[16];
 
 	private Map<Class<?>, Set<Entity>> entities;
-	private List<OnTouchMotionListener> touch_listeners;
+	private List<OnTouchActionListener> touch_listeners;
 
 	public TouchSurfaceView(Context context) {
 		super(context);
 		renderer = new Renderer(context);
 		setRenderer(renderer);
 		entities = new HashMap<Class<?>, Set<Entity>>();
-		touch_listeners = new LinkedList<OnTouchMotionListener>();
+		touch_listeners = new LinkedList<OnTouchActionListener>();
 	}
 
 	public float getSpaceWidth() {
@@ -71,7 +72,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 				visitor.visit(entity);
 	}
 
-	public void addOnTouchMotionListener(OnTouchMotionListener listener) {
+	public void addOnTouchMotionListener(OnTouchActionListener listener) {
 		touch_listeners.add(listener);
 	}
 
@@ -149,7 +150,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 					entity.getSprite().loadGLTexture(gl, Renderer.this.context);
 				}
 			});
-					
+
 			background.loadGLTexture(gl, this.context);
 
 			gl.glEnable(GL10.GL_TEXTURE_2D);
@@ -165,37 +166,82 @@ public class TouchSurfaceView extends GLSurfaceView {
 			this.previous_time = currentTime();
 		}
 
-		public void updateQuadPosition(final float x, final float y) {
+		public void touchActionDown(final int pointer_id, final float x,
+				final float y) {
+			Log.i("Touch down:", "id=" + pointer_id);
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {
-					for (OnTouchMotionListener listener : touch_listeners)
-						listener.onMotionTouch(x, y);
+					for (OnTouchActionListener listener : touch_listeners)
+						listener.onTouchActionDown(pointer_id, x, y);
 				}
 			});
 		}
+
+		public void touchActionUp(final int pointer_id, final float x,
+				final float y) {
+			Log.i("Touch up:", "id=" + pointer_id);
+			queueEvent(new Runnable() {
+				@Override
+				public void run() {
+					for (OnTouchActionListener listener : touch_listeners)
+						listener.onTouchActionUp(pointer_id, x, y);
+				}
+			});
+		}
+	}
+
+	private float[] screenToSurface(float screen_x, float screen_y) {
+		final int[] viewport = { 0, 0, screenWidth, screenHeight };
+
+		float[] resultWorldPos = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+		GLU.gluUnProject(screen_x, screen_y, 0, unprojectViewMatrix, 0,
+				unprojectProjMatrix, 0, viewport, 0, resultWorldPos, 0);
+		resultWorldPos[0] /= resultWorldPos[3];
+		resultWorldPos[1] /= resultWorldPos[3];
+		resultWorldPos[2] /= resultWorldPos[3];
+		resultWorldPos[3] = 1.0f;
+
+		return resultWorldPos;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
 		switch (e.getAction()) {
 		case MotionEvent.ACTION_MOVE:
-			final float screenX = e.getX();
-			final float screenY = screenHeight - e.getY();
-
-			final int[] viewport = { 0, 0, screenWidth, screenHeight };
-
-			float[] resultWorldPos = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-			GLU.gluUnProject(screenX, screenY, 0, unprojectViewMatrix, 0,
-					unprojectProjMatrix, 0, viewport, 0, resultWorldPos, 0);
-			resultWorldPos[0] /= resultWorldPos[3];
-			resultWorldPos[1] /= resultWorldPos[3];
-			resultWorldPos[2] /= resultWorldPos[3];
-			resultWorldPos[3] = 1.0f;
-
-			renderer.updateQuadPosition(resultWorldPos[0], resultWorldPos[1]);
 			break;
+		case MotionEvent.ACTION_DOWN:
+			for (int p = 0; p < e.getPointerCount(); p++) {
+				final float[] position = screenToSurface(e.getX(p),
+						screenHeight - e.getY(p));
+				renderer.touchActionDown(e.getPointerId(p), position[0],
+						position[1]);
+			}
+			break;
+		case MotionEvent.ACTION_POINTER_DOWN: {
+			final int p = e.getActionIndex();
+			final float[] position = screenToSurface(e.getX(p), screenHeight
+					- e.getY(p));
+			renderer.touchActionDown(e.getPointerId(p), position[0],
+					position[1]);
+			break;
+		}
+		case MotionEvent.ACTION_UP:
+			for (int p = 0; p < e.getPointerCount(); p++) {
+				final float[] position = screenToSurface(e.getX(p),
+						screenHeight - e.getY(p));
+				renderer.touchActionUp(e.getPointerId(p), position[0],
+						position[1]);
+			}
+			break;
+		case MotionEvent.ACTION_POINTER_UP: {
+			final int p = e.getActionIndex();
+			final float[] position = screenToSurface(e.getX(p), screenHeight
+					- e.getY(p));
+			renderer.touchActionUp(e.getPointerId(p), position[0], position[1]);
+			break;
+		}
 		}
 
 		return true;
