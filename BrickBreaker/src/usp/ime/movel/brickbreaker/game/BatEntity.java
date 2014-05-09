@@ -9,12 +9,13 @@ import com.demo.R;
 
 public class BatEntity extends Entity implements OnTouchMotionListener {
 
-	private float last_x;
+	private float speed_x;
+	private static final float SPEED = 2.0e-2f;
 
 	public BatEntity() {
 		super(new Sprite(new Geometry(0.0f, -0.7f, 0.1f, 0.1f),
 				R.drawable.pikachu));
-		this.last_x = 0.0f;
+		this.speed_x = 0.0f;
 		Geometry geom = getSprite().getGeometry(); 
 		geom.setCollision(0.0f, 0, geom.getOuterRadius());
 	}
@@ -26,13 +27,20 @@ public class BatEntity extends Entity implements OnTouchMotionListener {
 
 	@Override
 	public void onUpdate(TouchSurfaceView view) {
-		// TODO Auto-generated method stub
+		final Geometry sprite_geom = getSprite().getGeometry();
+		final float last_x = sprite_geom.getX(), last_y = sprite_geom.getY();
+		sprite_geom.translate(SPEED*speed_x, 0.0f);
+		speed_x = 0.0f;
+
+		if (sprite_geom.getX() < -view.getSpaceWidth()
+				|| sprite_geom.getX() > view.getSpaceWidth()) {
+			sprite_geom.setPosition(last_x, last_y);
+		}
 	}
 
 	@Override
 	public void onMotionTouch(float x, float y) {
-		getSprite().getGeometry().translate(x - last_x, 0);
-		last_x = x;
+		speed_x = (x <= 0.0f) ? -1.0f : 1.0f;
 	}
 
 }
