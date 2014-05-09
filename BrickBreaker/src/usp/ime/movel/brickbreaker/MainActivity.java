@@ -8,7 +8,6 @@ import com.demo.R;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 

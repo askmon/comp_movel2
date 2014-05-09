@@ -4,7 +4,6 @@ import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.OnTouchMotionListener;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
-import android.util.Log;
 
 import com.demo.R;
 
@@ -26,7 +25,6 @@ public class BatEntity extends Entity implements OnTouchMotionListener {
 	@Override
 	public void onUpdate(TouchSurfaceView view) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -1,7 +1,12 @@
 package usp.ime.movel.brickbreaker.graphics;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -9,6 +14,7 @@ import javax.microedition.khronos.opengles.GL10;
 import com.demo.R;
 
 import usp.ime.movel.brickbreaker.game.Entity;
+import usp.ime.movel.brickbreaker.game.EntityVisitor;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
@@ -25,14 +31,14 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private float[] unprojectViewMatrix = new float[16];
 	private float[] unprojectProjMatrix = new float[16];
 
-	private List<Entity> entities;
+	private Map<Class<?>, Set<Entity>> entities;
 	private List<OnTouchMotionListener> touch_listeners;
 
 	public TouchSurfaceView(Context context) {
 		super(context);
 		renderer = new Renderer(context);
 		setRenderer(renderer);
-		entities = new LinkedList<Entity>();
+		entities = new HashMap<Class<?>, Set<Entity>>();
 		touch_listeners = new LinkedList<OnTouchMotionListener>();
 	}
 
@@ -45,10 +51,26 @@ public class TouchSurfaceView extends GLSurfaceView {
 	}
 
 	public void addEntity(Entity entity) {
-		entities.add(entity);
+		Set<Entity> entity_set = entities.get(entity.getClass());
+		if (entity_set == null) {
+			entity_set = new HashSet<Entity>();
+			entities.put(entity.getClass(), entity_set);
+		}
+		entity_set.add(entity);
 		entity.onGameAdd(this);
 	}
-	
+
+	public void visitEntities(Class<?> entity_class, EntityVisitor visitor) {
+		for (Entity entity : entities.get(entity_class))
+			visitor.visit(entity);
+	}
+
+	public void visitEntities(EntityVisitor visitor) {
+		for (Entry<Class<?>, Set<Entity>> entry : entities.entrySet())
+			for (Entity entity : entry.getValue())
+				visitor.visit(entity);
+	}
+
 	public void addOnTouchMotionListener(OnTouchMotionListener listener) {
 		touch_listeners.add(listener);
 	}
@@ -73,7 +95,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 		}
 
 		@Override
-		public void onDrawFrame(GL10 gl) {
+		public void onDrawFrame(final GL10 gl) {
 			float current = currentTime();
 			float elapsed = current - this.previous_time;
 			this.previous_time = current;
@@ -81,15 +103,23 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 			while (lag >= TIME_PER_FRAME) {
 				// update
-				for (Entity entity : entities)
-					entity.onUpdate(TouchSurfaceView.this);
+				visitEntities(new EntityVisitor() {
+					@Override
+					public void visit(Entity entity) {
+						entity.onUpdate(TouchSurfaceView.this);
+					}
+				});
 				lag -= TIME_PER_FRAME;
 			}
 
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			background.draw(gl);
-			for (Entity entity : entities)
-				entity.getSprite().draw(gl);
+			visitEntities(new EntityVisitor() {
+				@Override
+				public void visit(Entity entity) {
+					entity.getSprite().draw(gl);
+				}
+			});
 		}
 
 		@Override
@@ -111,10 +141,15 @@ public class TouchSurfaceView extends GLSurfaceView {
 		}
 
 		@Override
-		public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+		public void onSurfaceCreated(final GL10 gl, EGLConfig config) {
 			Sprite.clearCache();
-			for (Entity entity : entities)
-				entity.getSprite().loadGLTexture(gl, this.context);
+			visitEntities(new EntityVisitor() {
+				@Override
+				public void visit(Entity entity) {
+					entity.getSprite().loadGLTexture(gl, Renderer.this.context);
+				}
+			});
+					
 			background.loadGLTexture(gl, this.context);
 
 			gl.glEnable(GL10.GL_TEXTURE_2D);
