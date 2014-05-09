@@ -14,13 +14,13 @@ public class BallEntity extends Entity {
 
 	private static final float INITIAL_SPEED = 2.0e-2f;
 
-	private MediaPlayer ploc;
+	private MediaPlayer ploc = null;
 	
 	private Context context;
 	
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
-				R.drawable.pikachu));
+				R.drawable.soccer));
 		this.speed_x = 0.0f;
 		this.speed_y = -1.0f;
 	}
@@ -59,6 +59,7 @@ public class BallEntity extends Entity {
 	@Override
 	public void onGameAdd(TouchSurfaceView view) {
 		context = view.getContext();
+		ploc = MediaPlayer.create(context, R.raw.cork );
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
@@ -68,7 +69,7 @@ public class BallEntity extends Entity {
 		speed_x += dx*2.0f;
 		speed_y *= -1;
 		normalizeSpeed();
-		ploc = MediaPlayer.create(context, R.raw.cork );
+		ploc.seekTo(0);
 		ploc.start();
 	}
 	
