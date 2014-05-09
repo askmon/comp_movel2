@@ -42,6 +42,7 @@ public class MainActivity extends Activity {
         	music.seekTo(last_music_pos);
         	Log.i("Music seeking back to ", ""+last_music_pos);
         }
+        music.setVolume(0.3f, 0.3f);
         music.start();
     }
 
