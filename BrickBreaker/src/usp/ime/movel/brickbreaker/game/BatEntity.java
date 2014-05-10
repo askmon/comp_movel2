@@ -13,7 +13,7 @@ public class BatEntity extends Entity implements OnTouchActionListener {
 	private static final float SPEED = 1.0e-2f;
 
 	public BatEntity() {
-		super(new Sprite(new Geometry(0.0f, -0.7f, 0.1f, 0.1f),
+		super(new Sprite(new Geometry(0.0f, -0.5f, 0.1f, 0.1f),
 				R.drawable.pikachu));
 		move_dirs = new float[2];
 		move_dirs[0] = 0.0f;

@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
         	Log.i("Music seeking back to ", ""+last_music_pos);
         }
         music.setVolume(0.3f, 0.3f);
+        music.setLooping(true);
         music.start();
     }
 

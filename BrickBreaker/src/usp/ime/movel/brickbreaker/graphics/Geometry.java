@@ -73,4 +73,8 @@ public class Geometry {
 		return false;
 	}
 
+	public float getCollisionRadius() {
+		return this.collision_radius;
+	}
+
 }

@@ -15,9 +15,9 @@ public class BallEntity extends Entity {
 	private static final float INITIAL_SPEED = 2.0e-2f;
 
 	private MediaPlayer ploc = null;
-	
+
 	private Context context;
-	
+
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.soccer));
@@ -30,7 +30,7 @@ public class BallEntity extends Entity {
 		final Geometry sprite_geom = getSprite().getGeometry();
 		final float last_x = sprite_geom.getX(), last_y = sprite_geom.getY();
 
-		sprite_geom.translate(INITIAL_SPEED*speed_x, INITIAL_SPEED*speed_y);
+		sprite_geom.translate(INITIAL_SPEED * speed_x, INITIAL_SPEED * speed_y);
 
 		if (sprite_geom.getX() < -view.getSpaceWidth()
 				|| sprite_geom.getX() > view.getSpaceWidth()) {
@@ -39,7 +39,7 @@ public class BallEntity extends Entity {
 		}
 
 		if (sprite_geom.getY() < -view.getSpaceHeight()
-				|| sprite_geom.getY() > 0.0f) {
+				|| sprite_geom.getY() > view.getSpaceHeight()) {
 			sprite_geom.setPosition(last_x, last_y);
 			speed_y = -speed_y;
 		}
@@ -48,10 +48,8 @@ public class BallEntity extends Entity {
 			@Override
 			public void visit(Entity entity) {
 				Geometry other_geometry = entity.getSprite().getGeometry();
-				if (sprite_geom.collidesWith(other_geometry)) {
-					sprite_geom.setPosition(last_x, last_y);
+				if (sprite_geom.collidesWith(other_geometry))
 					collideWithBat(other_geometry);
-				}
 			}
 		});
 	}
@@ -59,7 +57,7 @@ public class BallEntity extends Entity {
 	@Override
 	public void onGameAdd(TouchSurfaceView view) {
 		context = view.getContext();
-		ploc = MediaPlayer.create(context, R.raw.cork );
+		ploc = MediaPlayer.create(context, R.raw.cork);
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
@@ -72,8 +70,11 @@ public class BallEntity extends Entity {
 		float bounce_angle = angle - angle_diff;
 		speed_x = (float) Math.cos(bounce_angle);
 		speed_y = (float) Math.sin(bounce_angle);
+		float dist = geom.getCollisionRadius() + bat_geom.getCollisionRadius();
+		geom.setPosition(bat_geom.getX() + dist * (float) Math.cos(angle),
+				bat_geom.getY() + dist * (float) Math.sin(angle));
 		ploc.seekTo(0);
 		ploc.start();
 	}
-	
+
 }
