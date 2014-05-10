@@ -13,6 +13,10 @@ public abstract class Entity {
 	
 	public abstract void onGameAdd(TouchSurfaceView view);
 	
+	public void onGameRemove(TouchSurfaceView view) {
+		
+	}
+	
 	public abstract void onUpdate(TouchSurfaceView view);
 	
 	public Sprite getSprite() {

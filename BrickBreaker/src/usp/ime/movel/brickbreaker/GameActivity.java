@@ -21,6 +21,7 @@ public class GameActivity extends Activity {
 	private BroadcastReceiver defeat_event_receiver;
 
 	public final static String DEFEAT_EVENT = "usp.ime.movel.brickbreaker.defeat_event";
+	public static final String WIN_EVENT = "usp.ime.movel.brickbreaker.win_event";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class GameActivity extends Activity {
 		music.setLooping(true);
 		music.start();
 		registerReceiver(defeat_event_receiver, new IntentFilter(DEFEAT_EVENT));
+		registerReceiver(defeat_event_receiver, new IntentFilter(WIN_EVENT));
 	}
 
 	@Override
