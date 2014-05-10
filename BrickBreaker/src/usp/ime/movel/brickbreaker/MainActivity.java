@@ -1,60 +1,29 @@
 package usp.ime.movel.brickbreaker;
 
-import usp.ime.movel.brickbreaker.game.BallEntity;
-import usp.ime.movel.brickbreaker.game.BatEntity;
-import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
-
-import com.demo.R;
-
 import android.app.Activity;
-import android.media.MediaPlayer;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
-public class MainActivity extends Activity {
-
-    private TouchSurfaceView glSurfaceView;
-    private MediaPlayer music;
-    private int last_music_pos;
+public class MainActivity extends Activity implements OnClickListener {
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
-
-        glSurfaceView = new TouchSurfaceView( this );
-        setContentView( glSurfaceView );
-        
-        glSurfaceView.requestFocus();
-        glSurfaceView.setFocusableInTouchMode(true);
-        glSurfaceView.addEntity(new BallEntity());
-        glSurfaceView.addEntity(new BatEntity());
-        
-        last_music_pos = 0;
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_menu);
+        Button play_button = (Button) findViewById(R.id.play_button);
+        play_button.setOnClickListener(this);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        glSurfaceView.onResume();
-        music = MediaPlayer.create(MainActivity.this, R.raw.cinderela );
-        if (last_music_pos > 0) {
-        	music.seekTo(last_music_pos);
-        	Log.i("Music seeking back to ", ""+last_music_pos);
-        }
-        music.setVolume(0.3f, 0.3f);
-        music.setLooping(true);
-        music.start();
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        last_music_pos = music.getCurrentPosition();
-        music.stop();
-        music.release();
-        music = null;
-        glSurfaceView.onPause();
-    }
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()) {
+		case R.id.play_button:
+			Intent i = new Intent(this, GameActivity.class);
+			startActivity(i);
+			break;
+		}
+	}
 }

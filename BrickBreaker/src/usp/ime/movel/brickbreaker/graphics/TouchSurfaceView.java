@@ -11,8 +11,7 @@ import java.util.Set;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.demo.R;
-
+import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.game.Entity;
 import usp.ime.movel.brickbreaker.game.EntityVisitor;
 import android.content.Context;

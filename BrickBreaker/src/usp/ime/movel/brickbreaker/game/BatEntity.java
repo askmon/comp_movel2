@@ -1,11 +1,10 @@
 package usp.ime.movel.brickbreaker.game;
 
+import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.OnTouchActionListener;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
-
-import com.demo.R;
 
 public class BatEntity extends Entity implements OnTouchActionListener {
 
