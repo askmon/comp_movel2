@@ -3,7 +3,6 @@ package usp.ime.movel.brickbreaker.game;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
-import android.content.Context;
 import android.media.MediaPlayer;
 
 import com.demo.R;
