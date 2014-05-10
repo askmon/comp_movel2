@@ -40,10 +40,21 @@ public class BallEntity extends Entity {
 			sprite_geom.setPosition(last_x, last_y);
 			speed_y = -speed_y;
 		}
-		
-		if (sprite_geom.getY() < -view.getSpaceHeight()/2.0f) {
-			view.getContext().sendBroadcast(new Intent(GameActivity.DEFEAT_EVENT));
+
+		if (sprite_geom.getY() < -view.getSpaceHeight() / 2.0f) {
+			view.getContext().sendBroadcast(
+					new Intent(GameActivity.DEFEAT_EVENT));
 		}
+
+		view.visitEntities(BrickEntity.class, new EntityVisitor() {
+			@Override
+			public void visit(Entity entity) {
+				if (sprite_geom.collidesWith(entity.getSprite().getGeometry())) {
+					sprite_geom.setPosition(last_x, last_y);
+					collideWithBrick((BrickEntity) entity);
+				}
+			}
+		});
 
 		view.visitEntities(BatEntity.class, new EntityVisitor() {
 			@Override
@@ -58,6 +69,27 @@ public class BallEntity extends Entity {
 	@Override
 	public void onGameAdd(TouchSurfaceView view) {
 		ploc = MediaPlayer.create(view.getContext(), R.raw.cork);
+	}
+
+	protected void collideWithBrick(BrickEntity brick) {
+		Geometry brick_geom = brick.getSprite().getGeometry();
+		Geometry ball_geom = getSprite().getGeometry();
+		boolean left = ball_geom.getX() < brick_geom.getX()
+				- brick_geom.getWidth();
+		boolean right = ball_geom.getX() > brick_geom.getX()
+				+ brick_geom.getWidth();
+		boolean bottom = ball_geom.getY() < brick_geom.getY()
+				- brick_geom.getHeight();
+		boolean top = ball_geom.getY() > brick_geom.getY()
+				+ brick_geom.getHeight();
+		if ((left || right) && !bottom && !top)
+			speed_x = -speed_x;
+		if ((bottom || top) && !left && !right)
+			speed_y = -speed_y;
+		if (!left && !right && !bottom && !top) {
+			speed_x = -speed_x;
+			speed_y = -speed_y;
+		}
 	}
 
 	private void collideWithBat(Geometry bat_geom) {

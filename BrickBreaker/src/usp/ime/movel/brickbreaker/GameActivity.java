@@ -33,10 +33,10 @@ public class GameActivity extends Activity {
 		glSurfaceView.setFocusableInTouchMode(true);
 		glSurfaceView.addEntity(new BallEntity());
 		glSurfaceView.addEntity(new BatEntity());
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 5; i++)
 			for (int j = 0; j < 10; j++)
 				glSurfaceView.addEntity(new BrickEntity(-0.45f + j / 10.0f,
-						0.3f + i / 10.0f));
+						0.4f + i / 10.0f));
 
 		last_music_pos = 0;
 		defeat_event_receiver = new BroadcastReceiver() {
