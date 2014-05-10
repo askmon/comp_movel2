@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 	private Map<Class<?>, Set<Entity>> entities;
 	private List<OnTouchActionListener> touch_listeners;
+	private Queue<Entity> to_be_removed;
 
 	public TouchSurfaceView(Context context) {
 		super(context);
@@ -40,6 +42,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 		setRenderer(renderer);
 		entities = new HashMap<Class<?>, Set<Entity>>();
 		touch_listeners = new LinkedList<OnTouchActionListener>();
+		to_be_removed = new LinkedList<Entity>();
 	}
 
 	public float getSpaceWidth() {
@@ -58,6 +61,17 @@ public class TouchSurfaceView extends GLSurfaceView {
 		}
 		entity_set.add(entity);
 		entity.onGameAdd(this);
+	}
+
+	public void removeEntity(Entity entity) {
+		to_be_removed.add(entity);
+	}
+	
+	private void doRemoveEntity(Entity entity) {
+		Set<Entity> entity_set = entities.get(entity.getClass());
+		if (entity_set == null)
+			return;
+		entity_set.remove(entity);
 	}
 
 	public void visitEntities(Class<?> entity_class, EntityVisitor visitor) {
@@ -109,6 +123,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 						entity.onUpdate(TouchSurfaceView.this);
 					}
 				});
+				for (Entity removed : to_be_removed)
+					doRemoveEntity(removed);
 				lag -= TIME_PER_FRAME;
 			}
 

@@ -90,6 +90,7 @@ public class BallEntity extends Entity {
 			speed_x = -speed_x;
 			speed_y = -speed_y;
 		}
+		brick.destroy();
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
