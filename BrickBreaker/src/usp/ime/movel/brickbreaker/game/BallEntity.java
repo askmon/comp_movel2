@@ -84,30 +84,32 @@ public class BallEntity extends Entity {
 				+ brick_geom.getHeight();
 		if ((left || right) && !bottom && !top)
 			speed_x = -speed_x;
-		if ((bottom || top) && !left && !right)
+		else if ((bottom || top) && !left && !right)
 			speed_y = -speed_y;
-		if (!left && !right && !bottom && !top) {
-			speed_x = -speed_x;
-			speed_y = -speed_y;
-		}
+		else
+			bounce(brick_geom);
 		brick.destroy();
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
+		bounce(bat_geom);
+		ploc.seekTo(0);
+		ploc.start();
+	}
+
+	private void bounce(Geometry other) {
 		Geometry geom = getSprite().getGeometry();
-		float dx = geom.getX() - bat_geom.getX();
-		float dy = geom.getY() - bat_geom.getY();
+		float dx = geom.getX() - other.getX();
+		float dy = geom.getY() - other.getY();
 		float angle = (float) Math.atan2(dy, dx);
 		float speed_angle = (float) (Math.atan2(speed_y, speed_x) + Math.PI);
 		float angle_diff = speed_angle - angle;
 		float bounce_angle = angle - angle_diff;
 		speed_x = (float) Math.cos(bounce_angle);
 		speed_y = (float) Math.sin(bounce_angle);
-		float dist = geom.getCollisionRadius() + bat_geom.getCollisionRadius();
-		geom.setPosition(bat_geom.getX() + dist * (float) Math.cos(angle),
-				bat_geom.getY() + dist * (float) Math.sin(angle));
-		ploc.seekTo(0);
-		ploc.start();
+		float dist = geom.getCollisionRadius() + other.getCollisionRadius();
+		geom.setPosition(other.getX() + dist * (float) Math.cos(angle),
+				other.getY() + dist * (float) Math.sin(angle));
 	}
 
 }
