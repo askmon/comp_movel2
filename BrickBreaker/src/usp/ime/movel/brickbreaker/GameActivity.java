@@ -3,8 +3,11 @@ package usp.ime.movel.brickbreaker;
 import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.game.BatEntity;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
-
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,9 @@ public class GameActivity extends Activity {
     private TouchSurfaceView glSurfaceView;
     private MediaPlayer music;
     private int last_music_pos;
+	private BroadcastReceiver defeat_event_receiver;
+	
+	public final static String DEFEAT_EVENT = "usp.ime.movel.brickbreaker.defeat_event";
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -28,8 +34,13 @@ public class GameActivity extends Activity {
         glSurfaceView.addEntity(new BatEntity());
         
         last_music_pos = 0;
+        defeat_event_receiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				GameActivity.this.finish();
+			}
+		};
     }
-
 
     @Override
     protected void onResume() {
@@ -43,8 +54,8 @@ public class GameActivity extends Activity {
         music.setVolume(0.3f, 0.3f);
         music.setLooping(true);
         music.start();
+        registerReceiver(defeat_event_receiver, new IntentFilter(DEFEAT_EVENT));
     }
-
 
     @Override
     protected void onPause() {
@@ -54,5 +65,6 @@ public class GameActivity extends Activity {
         music.release();
         music = null;
         glSurfaceView.onPause();
+        unregisterReceiver(defeat_event_receiver);
     }
 }

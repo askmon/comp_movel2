@@ -1,9 +1,11 @@
 package usp.ime.movel.brickbreaker.game;
 
+import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
+import android.content.Intent;
 import android.media.MediaPlayer;
 
 public class BallEntity extends Entity {
@@ -34,10 +36,13 @@ public class BallEntity extends Entity {
 			speed_x = -speed_x;
 		}
 
-		if (sprite_geom.getY() < -view.getSpaceHeight()
-				|| sprite_geom.getY() > view.getSpaceHeight()) {
+		if (sprite_geom.getY() > view.getSpaceHeight()) {
 			sprite_geom.setPosition(last_x, last_y);
 			speed_y = -speed_y;
+		}
+		
+		if (sprite_geom.getY() < -view.getSpaceHeight()/2.0f) {
+			view.getContext().sendBroadcast(new Intent(GameActivity.DEFEAT_EVENT));
 		}
 
 		view.visitEntities(BatEntity.class, new EntityVisitor() {
