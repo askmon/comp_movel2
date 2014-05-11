@@ -19,7 +19,6 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class TouchSurfaceView extends GLSurfaceView {
@@ -68,7 +67,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 	public void removeEntity(Entity entity) {
 		to_be_removed.add(entity);
 	}
-	
+
 	private void doRemoveEntity(Entity entity) {
 		Set<Entity> entity_set = entities.get(entity.getClass());
 		if (entity_set == null)
@@ -155,7 +154,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 					-1.0f, 1.0f);
 			Matrix.setIdentityM(unprojectViewMatrix, 0);
 
-			background.setShape(ratio, 1.0f);
+			background.setShape(ratio, 0.75f);
 		}
 
 		@Override
@@ -185,7 +184,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 		public void touchActionDown(final int pointer_id, final float x,
 				final float y) {
-			//Log.i("Touch down:", "id=" + pointer_id);
+			// Log.i("Touch down:", "id=" + pointer_id);
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {
@@ -197,7 +196,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 		public void touchActionUp(final int pointer_id, final float x,
 				final float y) {
-			//Log.i("Touch up:", "id=" + pointer_id);
+			// Log.i("Touch up:", "id=" + pointer_id);
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {

@@ -50,12 +50,12 @@ public class BallEntity extends Entity {
 			speed_x = -speed_x;
 		}
 
-		if (sprite_geom.getY() > view.getSpaceHeight()) {
+		if (sprite_geom.getY() > view.getSpaceHeight()*0.75f) {
 			sprite_geom.setPosition(last_x, last_y);
 			speed_y = -speed_y;
 		}
 
-		if (sprite_geom.getY() < -view.getSpaceHeight() / 2.0f) {
+		if (sprite_geom.getY() < -view.getSpaceHeight()*0.75f) {
 			if (--lifes <= 0)
 				view.getContext().sendBroadcast(
 						new Intent(GameActivity.DEFEAT_EVENT));
