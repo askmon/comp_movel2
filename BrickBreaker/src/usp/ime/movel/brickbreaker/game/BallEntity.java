@@ -7,6 +7,7 @@ import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 public class BallEntity extends Entity {
 
@@ -16,11 +17,14 @@ public class BallEntity extends Entity {
 
 	private MediaPlayer ploc = null;
 
+	private int lifes;
+
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.soccer));
 		this.speed_x = 0.0f;
 		this.speed_y = -1.0f;
+		this.lifes = 3;
 	}
 
 	@Override
@@ -42,8 +46,15 @@ public class BallEntity extends Entity {
 		}
 
 		if (sprite_geom.getY() < -view.getSpaceHeight() / 2.0f) {
-			view.getContext().sendBroadcast(
-					new Intent(GameActivity.DEFEAT_EVENT));
+			if (--lifes <= 0)
+				view.getContext().sendBroadcast(
+						new Intent(GameActivity.DEFEAT_EVENT));
+			else {
+				Log.i("Life count:", "" + lifes);
+				getSprite().setPosition(0.0f, 0.0f);
+				speed_x = 0.0f;
+				speed_y = -1.0f;
+			}
 		}
 
 		view.visitEntities(BrickEntity.class, new EntityVisitor() {

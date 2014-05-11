@@ -1,6 +1,7 @@
 package usp.ime.movel.brickbreaker.game;
 
 import android.content.Intent;
+import android.util.Log;
 import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
@@ -38,6 +39,7 @@ public class BrickEntity extends Entity {
 		if (--ingame_count <= 0)
 			view.getContext().sendBroadcast(
 					new Intent(GameActivity.WIN_EVENT));
+		Log.i("Brick count:", "" + ingame_count);
 	}
 
 }

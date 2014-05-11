@@ -72,6 +72,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 		if (entity_set == null)
 			return;
 		entity_set.remove(entity);
+		entity.onGameRemove(this);
 	}
 
 	public void visitEntities(Class<?> entity_class, EntityVisitor visitor) {
@@ -195,7 +196,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 		public void touchActionUp(final int pointer_id, final float x,
 				final float y) {
-			Log.i("Touch up:", "id=" + pointer_id);
+			//Log.i("Touch up:", "id=" + pointer_id);
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {
