@@ -7,7 +7,6 @@ import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.util.Log;
 
 public class BallEntity extends Entity {
 
@@ -17,8 +16,6 @@ public class BallEntity extends Entity {
 
 	private MediaPlayer ploc = null;
 
-	private int lifes;
-
 	private int cooldown;
 
 	public BallEntity() {
@@ -26,7 +23,6 @@ public class BallEntity extends Entity {
 				R.drawable.soccer));
 		this.speed_x = 0.0f;
 		this.speed_y = -1.0f;
-		this.lifes = 3;
 	}
 
 	@Override
@@ -55,19 +51,8 @@ public class BallEntity extends Entity {
 			speed_y = -speed_y;
 		}
 
-		if (sprite_geom.getY() < -view.getSpaceHeight()*0.75f) {
-			if (--lifes <= 0)
-				view.getContext().sendBroadcast(
-						new Intent(GameActivity.DEFEAT_EVENT));
-			else {
-				Log.i("Life count:", "" + lifes);
-				getSprite().setPosition(0.0f, 0.0f);
-				speed_x = 0.0f;
-				speed_y = 0.0f;
-				cooldown = (int)(2000.0f/TouchSurfaceView.TIME_PER_FRAME);
-				Log.i("Cooldown", "" + cooldown);
-			}
-		}
+		if (sprite_geom.getY() < -view.getSpaceHeight()*0.75f)
+			loseLife(view);
 
 		view.visitEntities(BrickEntity.class, new EntityVisitor() {
 			@Override
@@ -87,6 +72,18 @@ public class BallEntity extends Entity {
 					collideWithBat(other_geometry);
 			}
 		});
+	}
+
+	private void loseLife(TouchSurfaceView view) {
+		if (view.getLifeDisplay().changeCount(-1) < 0)
+			view.getContext().sendBroadcast(
+					new Intent(GameActivity.DEFEAT_EVENT));
+		else {
+			getSprite().setPosition(0.0f, 0.0f);
+			speed_x = 0.0f;
+			speed_y = 0.0f;
+			cooldown = (int)(2000.0f/TouchSurfaceView.TIME_PER_FRAME);
+		}
 	}
 
 	@Override

@@ -35,6 +35,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private List<OnTouchActionListener> touch_listeners;
 	private Queue<Entity> to_be_removed;
 
+	private LifeDisplay life_display;
+
 	public static final float TIME_PER_FRAME = 1000.0f / 30.0f;
 
 	public TouchSurfaceView(Context context) {
@@ -44,6 +46,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 		entities = new HashMap<Class<?>, Set<Entity>>();
 		touch_listeners = new LinkedList<OnTouchActionListener>();
 		to_be_removed = new LinkedList<Entity>();
+		life_display = new LifeDisplay(this, 3);
 	}
 
 	public float getSpaceWidth() {
@@ -52,6 +55,10 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 	public float getSpaceHeight() {
 		return 1.0f;
+	}
+	
+	public LifeDisplay getLifeDisplay() {
+		return this.life_display;
 	}
 
 	public void addEntity(Entity entity) {
@@ -131,6 +138,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			background.draw(gl);
+			life_display.draw(gl);
 			visitEntities(new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
