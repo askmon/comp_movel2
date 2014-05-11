@@ -68,8 +68,10 @@ public class BallEntity extends Entity {
 			@Override
 			public void visit(Entity entity) {
 				Geometry other_geometry = entity.getSprite().getGeometry();
-				if (sprite_geom.collidesWith(other_geometry))
+				if (sprite_geom.collidesWith(other_geometry)) {
+					sprite_geom.setPosition(last_x, last_y);
 					collideWithBat(other_geometry);
+				}
 			}
 		});
 	}
