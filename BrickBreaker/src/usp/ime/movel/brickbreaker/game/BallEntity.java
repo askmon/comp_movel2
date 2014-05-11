@@ -19,6 +19,8 @@ public class BallEntity extends Entity {
 
 	private int lifes;
 
+	private int cooldown;
+
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.soccer));
@@ -29,6 +31,14 @@ public class BallEntity extends Entity {
 
 	@Override
 	public void onUpdate(TouchSurfaceView view) {
+		if (cooldown > 0) {
+			cooldown--;
+			if (cooldown == 0) {
+				speed_x = 0.0f;
+				speed_y = -1.0f;
+			}
+			return;
+		}
 		final Geometry sprite_geom = getSprite().getGeometry();
 		final float last_x = sprite_geom.getX(), last_y = sprite_geom.getY();
 
@@ -53,7 +63,9 @@ public class BallEntity extends Entity {
 				Log.i("Life count:", "" + lifes);
 				getSprite().setPosition(0.0f, 0.0f);
 				speed_x = 0.0f;
-				speed_y = -1.0f;
+				speed_y = 0.0f;
+				cooldown = (int)(2000.0f/TouchSurfaceView.TIME_PER_FRAME);
+				Log.i("Cooldown", "" + cooldown);
 			}
 		}
 

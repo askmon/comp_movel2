@@ -34,6 +34,7 @@ public class GameActivity extends Activity {
 		glSurfaceView.setFocusableInTouchMode(true);
 		glSurfaceView.addEntity(new BallEntity());
 		glSurfaceView.addEntity(new BatEntity());
+		BrickEntity.resetCount();
 		for (int i = 0; i < 5; i++)
 			for (int j = 0; j < 10; j++)
 				glSurfaceView.addEntity(new BrickEntity(-0.45f + j / 10.0f,

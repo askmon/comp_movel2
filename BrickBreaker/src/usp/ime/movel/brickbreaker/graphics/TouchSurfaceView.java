@@ -36,6 +36,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private List<OnTouchActionListener> touch_listeners;
 	private Queue<Entity> to_be_removed;
 
+	public static final float TIME_PER_FRAME = 1000.0f / 30.0f;
+
 	public TouchSurfaceView(Context context) {
 		super(context);
 		renderer = new Renderer(context);
@@ -97,8 +99,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 		private float previous_time;
 		private float lag;
 
-		private static final float TIME_PER_FRAME = 1000.0f / 30.0f;
-
 		public Renderer(Context context) {
 			this.context = context;
 			this.lag = 0.0f;
@@ -126,6 +126,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 				});
 				for (Entity removed : to_be_removed)
 					doRemoveEntity(removed);
+				to_be_removed.clear();
 				lag -= TIME_PER_FRAME;
 			}
 
@@ -184,7 +185,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 		public void touchActionDown(final int pointer_id, final float x,
 				final float y) {
-			Log.i("Touch down:", "id=" + pointer_id);
+			//Log.i("Touch down:", "id=" + pointer_id);
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {

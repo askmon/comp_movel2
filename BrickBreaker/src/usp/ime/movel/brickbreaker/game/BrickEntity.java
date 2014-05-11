@@ -11,12 +11,18 @@ import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 public class BrickEntity extends Entity {
 	
 	private TouchSurfaceView view;
+	private boolean destroyed;
 	private static int ingame_count = 0;
 
 	public BrickEntity(float x, float y) {
 		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f),
 				R.drawable.pikachu));
-		view = null;
+		this.view = null;
+		this.destroyed = false;
+	}
+	
+	public static void resetCount() {
+		ingame_count = 0;
 	}
 
 	@Override
@@ -31,7 +37,10 @@ public class BrickEntity extends Entity {
 	}
 
 	public void destroy() {
-		view.removeEntity((Entity)this);
+		if (!destroyed) {
+			view.removeEntity((Entity)this);
+			destroyed = true;
+		}
 	}
 
 	@Override
