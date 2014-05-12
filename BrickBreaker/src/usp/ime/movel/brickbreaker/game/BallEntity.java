@@ -22,8 +22,7 @@ public class BallEntity extends Entity {
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.soccer));
-		this.speed_x = 0.0f;
-		this.speed_y = -1.0f;
+		setInitialSpeed();
 	}
 
 	@Override
@@ -31,8 +30,7 @@ public class BallEntity extends Entity {
 		if (cooldown > 0) {
 			cooldown--;
 			if (cooldown == 0) {
-				speed_x = 0.0f;
-				speed_y = -1.0f;
+				setInitialSpeed();
 			}
 			return;
 		}
@@ -75,6 +73,11 @@ public class BallEntity extends Entity {
 				}
 			}
 		});
+	}
+
+	private void setInitialSpeed() {
+		speed_x = 0.0f;
+		speed_y = -1.0f;
 	}
 
 	private void loseLife(TouchSurfaceView view) {
