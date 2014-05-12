@@ -12,14 +12,18 @@ import java.util.Set;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.game.Entity;
 import usp.ime.movel.brickbreaker.game.EntityVisitor;
+import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 public class TouchSurfaceView extends GLSurfaceView {
 
@@ -27,6 +31,10 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 	private int screenWidth;
 	private int screenHeight;
+	
+	private TextView score;
+	private int points = 0;
+	private GameActivity context;
 
 	private float[] unprojectViewMatrix = new float[16];
 	private float[] unprojectProjMatrix = new float[16];
@@ -39,14 +47,25 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 	public static final float TIME_PER_FRAME = 1000.0f / 30.0f;
 
-	public TouchSurfaceView(Context context) {
-		super(context);
+	public TouchSurfaceView(Context context, AttributeSet attr) {
+		super(context, attr);
 		renderer = new Renderer(context);
 		setRenderer(renderer);
 		entities = new HashMap<Class<?>, Set<Entity>>();
 		touch_listeners = new LinkedList<OnTouchActionListener>();
 		to_be_removed = new LinkedList<Entity>();
 		life_display = new LifeDisplay(this, 3);
+		this.context = (GameActivity)context;
+	}
+	
+	public void addScore(){
+		points++;
+		context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                context.setScore(points);
+            }
+        });
 	}
 
 	public float getSpaceWidth() {
@@ -60,7 +79,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 	public LifeDisplay getLifeDisplay() {
 		return this.life_display;
 	}
-
+	
 	public void addEntity(Entity entity) {
 		Set<Entity> entity_set = entities.get(entity.getClass());
 		if (entity_set == null) {
@@ -139,6 +158,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			background.draw(gl);
 			life_display.draw(gl);
+			
 			visitEntities(new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {

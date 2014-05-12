@@ -2,5 +2,6 @@
 
     <string name="app_name">BrickBreaker</string>
     <string name="play_button">Play!</string>
-
+	<string name="title">Attack on Zombies</string>
+    
 </resources>

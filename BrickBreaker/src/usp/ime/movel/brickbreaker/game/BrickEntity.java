@@ -39,6 +39,7 @@ public class BrickEntity extends Entity {
 	public void destroy() {
 		if (!destroyed) {
 			view.removeEntity((Entity)this);
+			view.addScore();
 			destroyed = true;
 		}
 	}
@@ -48,7 +49,7 @@ public class BrickEntity extends Entity {
 		if (--ingame_count <= 0)
 			view.getContext().sendBroadcast(
 					new Intent(GameActivity.WIN_EVENT));
-		Log.i("Brick count:", "" + ingame_count);
+		//Log.i("Brick count:", "" + ingame_count);
 	}
 
 }

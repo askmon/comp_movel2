@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 public class GameActivity extends Activity {
 
@@ -19,6 +20,8 @@ public class GameActivity extends Activity {
 	private MediaPlayer music;
 	private int last_music_pos;
 	private BroadcastReceiver defeat_event_receiver;
+	private TextView score;
+	private int points;
 
 	public final static String DEFEAT_EVENT = "usp.ime.movel.brickbreaker.defeat_event";
 	public static final String WIN_EVENT = "usp.ime.movel.brickbreaker.win_event";
@@ -26,9 +29,11 @@ public class GameActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		glSurfaceView = new TouchSurfaceView(this);
-		setContentView(glSurfaceView);
+        setContentView(R.layout.game);
+		glSurfaceView = (TouchSurfaceView)findViewById(R.id.gamescreen);
+		score = (TextView)findViewById(R.id.score);
+		score.setText("Score: " + points);
+		//setContentView(glSurfaceView);
 
 		glSurfaceView.requestFocus();
 		glSurfaceView.setFocusableInTouchMode(true);
@@ -74,5 +79,9 @@ public class GameActivity extends Activity {
 		music = null;
 		glSurfaceView.onPause();
 		unregisterReceiver(defeat_event_receiver);
+	}
+	
+	public void setScore(int points){
+		this.score.setText("Score: " + points);
 	}
 }
