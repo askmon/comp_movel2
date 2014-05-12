@@ -15,6 +15,7 @@ public class BallEntity extends Entity {
 	private static final float INITIAL_SPEED = 2.0e-2f;
 
 	private MediaPlayer ploc = null;
+	private MediaPlayer fall = null;
 
 	private int cooldown;
 
@@ -91,6 +92,7 @@ public class BallEntity extends Entity {
 	@Override
 	public void onGameAdd(TouchSurfaceView view) {
 		ploc = MediaPlayer.create(view.getContext(), R.raw.cork);
+		fall = MediaPlayer.create(view.getContext(), R.raw.punch);
 	}
 
 	protected void collideWithBrick(BrickEntity brick) {
@@ -110,6 +112,8 @@ public class BallEntity extends Entity {
 			speed_y = -speed_y;
 		else
 			bounce(brick_geom);
+		fall.seekTo(0);
+		fall.start();
 		brick.destroy();
 	}
 
