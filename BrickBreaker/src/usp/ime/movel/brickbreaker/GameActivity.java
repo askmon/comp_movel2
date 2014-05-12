@@ -19,7 +19,7 @@ public class GameActivity extends Activity {
 	private TouchSurfaceView glSurfaceView;
 	private MediaPlayer music;
 	private int last_music_pos;
-	private BroadcastReceiver defeat_event_receiver;
+	private BroadcastReceiver event_receiver;
 	private TextView score;
 	private int points;
 
@@ -35,8 +35,8 @@ public class GameActivity extends Activity {
 		score.setText("Score: " + points);
 		//setContentView(glSurfaceView);
 
-		glSurfaceView.requestFocus();
 		glSurfaceView.setFocusableInTouchMode(true);
+		glSurfaceView.requestFocus();
 		glSurfaceView.addEntity(new BallEntity());
 		glSurfaceView.addEntity(new BatEntity());
 		BrickEntity.resetCount();
@@ -46,7 +46,7 @@ public class GameActivity extends Activity {
 						0.2f + i / 10.0f));
 
 		last_music_pos = 0;
-		defeat_event_receiver = new BroadcastReceiver() {
+		event_receiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				GameActivity.this.finish();
@@ -66,8 +66,8 @@ public class GameActivity extends Activity {
 		music.setVolume(0.3f, 0.3f);
 		music.setLooping(true);
 		music.start();
-		registerReceiver(defeat_event_receiver, new IntentFilter(DEFEAT_EVENT));
-		registerReceiver(defeat_event_receiver, new IntentFilter(WIN_EVENT));
+		registerReceiver(event_receiver, new IntentFilter(DEFEAT_EVENT));
+		registerReceiver(event_receiver, new IntentFilter(WIN_EVENT));
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class GameActivity extends Activity {
 		music.release();
 		music = null;
 		glSurfaceView.onPause();
-		unregisterReceiver(defeat_event_receiver);
+		unregisterReceiver(event_receiver);
 	}
 	
 	public void setScore(int points){
