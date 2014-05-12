@@ -1,12 +1,11 @@
 package usp.ime.movel.brickbreaker.game;
 
-import android.content.Intent;
-import android.util.Log;
 import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
+import android.content.Intent;
 
 public class BrickEntity extends Entity {
 	
