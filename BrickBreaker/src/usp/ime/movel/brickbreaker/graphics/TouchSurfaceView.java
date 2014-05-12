@@ -253,41 +253,40 @@ public class TouchSurfaceView extends GLSurfaceView {
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
 		switch (e.getAction()) {
-		case MotionEvent.ACTION_MOVE:
-			break;
-		case MotionEvent.ACTION_DOWN:
-			for (int p = 0; p < e.getPointerCount(); p++) {
-				final float[] position = screenToSurface(e.getX(p),
-						screenHeight - e.getY(p));
-				renderer.touchActionDown(e.getPointerId(p), position[0],
-						position[1]);
+			case MotionEvent.ACTION_MOVE:
+				break;
+			case MotionEvent.ACTION_DOWN:
+				for (int p = 0; p < e.getPointerCount(); p++)
+					executeActionDown(e, p);
+				break;
+			case MotionEvent.ACTION_POINTER_DOWN: {
+				executeActionDown(e, e.getActionIndex());
+				break;
 			}
-			break;
-		case MotionEvent.ACTION_POINTER_DOWN: {
-			final int p = e.getActionIndex();
-			final float[] position = screenToSurface(e.getX(p), screenHeight
-					- e.getY(p));
-			renderer.touchActionDown(e.getPointerId(p), position[0],
-					position[1]);
-			break;
-		}
-		case MotionEvent.ACTION_UP:
-			for (int p = 0; p < e.getPointerCount(); p++) {
-				final float[] position = screenToSurface(e.getX(p),
-						screenHeight - e.getY(p));
-				renderer.touchActionUp(e.getPointerId(p), position[0],
-						position[1]);
+			case MotionEvent.ACTION_UP:
+				for (int p = 0; p < e.getPointerCount(); p++)
+					executeActionUp(e, p);
+				break;
+			case MotionEvent.ACTION_POINTER_UP: {
+				executeActionUp(e, e.getActionIndex());
+				break;
 			}
-			break;
-		case MotionEvent.ACTION_POINTER_UP: {
-			final int p = e.getActionIndex();
-			final float[] position = screenToSurface(e.getX(p), screenHeight
-					- e.getY(p));
-			renderer.touchActionUp(e.getPointerId(p), position[0], position[1]);
-			break;
-		}
 		}
 
 		return true;
+	}
+
+	private void executeActionUp(MotionEvent e, int p) {
+		final float[] position = screenToSurface(e.getX(p),
+				screenHeight - e.getY(p));
+		renderer.touchActionUp(e.getPointerId(p), position[0],
+				position[1]);
+	}
+
+	private void executeActionDown(MotionEvent e, int p) {
+		final float[] position = screenToSurface(e.getX(p),
+				screenHeight - e.getY(p));
+		renderer.touchActionDown(e.getPointerId(p), position[0],
+				position[1]);
 	}
 }
