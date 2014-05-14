@@ -10,8 +10,8 @@ public class DyingBrickEntity extends Entity {
 	private int time;
 	private float x, y, dx, dy;
 
-	public DyingBrickEntity(float x, float y, float dx, float dy) {
-		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), R.drawable.pikachu));
+	public DyingBrickEntity(float x, float y, float dx, float dy, int texture_id) {
+		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), texture_id));
 		this.time = 0;
 		this.x = x;
 		this.y = y;

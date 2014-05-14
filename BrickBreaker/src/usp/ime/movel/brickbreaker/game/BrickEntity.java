@@ -17,8 +17,7 @@ public class BrickEntity extends Entity {
 	private DyingBrickEntity dying_effect;
 
 	public BrickEntity(float x, float y) {
-		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f),
-				getTexture()));
+		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), getTexture()));
 		setHp();
 		this.view = null;
 		this.destroyed = false;
@@ -27,15 +26,15 @@ public class BrickEntity extends Entity {
 
 	private void setHp() {
 		switch (current_texture) {
-			case R.drawable.tank:
-				this.hp = 3;
-			case R.drawable.witch:
-				this.hp = 2;
-			default:
-				this.hp = 1;
+		case R.drawable.tank:
+			this.hp = 3;
+		case R.drawable.witch:
+			this.hp = 2;
+		default:
+			this.hp = 1;
 		}
 	}
-	
+
 	private static int getTexture() {
 		if (ingame_count < 30)
 			current_texture = R.drawable.zumbi;
@@ -64,11 +63,12 @@ public class BrickEntity extends Entity {
 	public void inflictDamage(int ballDamage, float impact_x, float impact_y) {
 		hp -= ballDamage;
 		if (!destroyed && hp <= 0) {
-			view.removeEntity((Entity)this);
+			view.removeEntity((Entity) this);
 			view.addScore();
 			destroyed = true;
 			dying_effect = new DyingBrickEntity(getSprite().getGeometry()
-					.getX(), getSprite().getGeometry().getY(), impact_x, impact_y);
+					.getX(), getSprite().getGeometry().getY(), impact_x,
+					impact_y, current_texture);
 		}
 	}
 
@@ -78,6 +78,5 @@ public class BrickEntity extends Entity {
 			view.getContext().sendBroadcast(new Intent(GameActivity.WIN_EVENT));
 		if (dying_effect != null)
 			view.addEntity(dying_effect);
-		// Log.i("Brick count:", "" + ingame_count);
 	}
 }
