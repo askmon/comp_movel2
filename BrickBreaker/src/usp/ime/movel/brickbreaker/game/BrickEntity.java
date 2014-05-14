@@ -1,7 +1,6 @@
 package usp.ime.movel.brickbreaker.game;
 
 import usp.ime.movel.brickbreaker.GameActivity;
-import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
@@ -12,12 +11,14 @@ public class BrickEntity extends Entity {
 	private TouchSurfaceView view;
 	private boolean destroyed;
 	private static int ingame_count = 0;
+	private int hp;
 
-	public BrickEntity(float x, float y) {
+	public BrickEntity(float x, float y, int texture_id, int hp) {
 		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f),
-				R.drawable.pikachu));
+				texture_id));
 		this.view = null;
 		this.destroyed = false;
+		this.hp = hp;
 	}
 	
 	public static void resetCount() {
@@ -36,7 +37,8 @@ public class BrickEntity extends Entity {
 	}
 
 	public void destroy() {
-		if (!destroyed) {
+		hp -= 1;
+		if (!destroyed && hp <= 0) {
 			view.removeEntity((Entity)this);
 			view.addScore();
 			destroyed = true;
@@ -50,5 +52,4 @@ public class BrickEntity extends Entity {
 					new Intent(GameActivity.WIN_EVENT));
 		//Log.i("Brick count:", "" + ingame_count);
 	}
-
 }
