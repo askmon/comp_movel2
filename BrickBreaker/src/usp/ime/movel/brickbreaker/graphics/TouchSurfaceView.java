@@ -23,7 +23,6 @@ import android.opengl.GLU;
 import android.opengl.Matrix;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.TextView;
 
 public class TouchSurfaceView extends GLSurfaceView {
 
@@ -32,7 +31,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private int screenWidth;
 	private int screenHeight;
 	
-	private TextView score;
 	private int points = 0;
 	private GameActivity context;
 	
