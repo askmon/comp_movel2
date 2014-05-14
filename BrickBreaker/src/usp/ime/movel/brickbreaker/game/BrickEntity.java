@@ -11,27 +11,16 @@ public class BrickEntity extends Entity {
 	private TouchSurfaceView view;
 	private boolean destroyed;
 	private static int ingame_count = 0;
-<<<<<<< HEAD
 	private int hp;
-=======
 	private DyingBrickEntity dying_effect;
->>>>>>> Efeito dos tijolos usa direção do impacto da bola
 
-<<<<<<< HEAD
 	public BrickEntity(float x, float y, int texture_id, int hp) {
 		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f),
 				texture_id));
-=======
-	public BrickEntity(float x, float y) {
-		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), R.drawable.pikachu));
->>>>>>> Efeito dos tijolos morrendo
 		this.view = null;
 		this.destroyed = false;
-<<<<<<< HEAD
 		this.hp = hp;
-=======
 		this.dying_effect = null;
->>>>>>> Efeito dos tijolos usa direção do impacto da bola
 	}
 
 	public static void resetCount() {
