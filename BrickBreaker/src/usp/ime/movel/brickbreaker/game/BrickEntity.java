@@ -37,12 +37,12 @@ public class BrickEntity extends Entity {
 	}
 	
 	private static int getTexture() {
-		if (ingame_count < 10)
-			current_texture = R.drawable.tank;
-		else if (ingame_count >= 10 && ingame_count < 20)
+		if (ingame_count < 30)
+			current_texture = R.drawable.zumbi;
+		else if (ingame_count >= 30 && ingame_count < 40)
 			current_texture = R.drawable.witch;
 		else
-			current_texture = R.drawable.zumbi;
+			current_texture = R.drawable.tank;
 		return current_texture;
 	}
 
