@@ -1,6 +1,7 @@
 package usp.ime.movel.brickbreaker.game;
 
 import usp.ime.movel.brickbreaker.GameActivity;
+import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
@@ -11,16 +12,38 @@ public class BrickEntity extends Entity {
 	private TouchSurfaceView view;
 	private boolean destroyed;
 	private static int ingame_count = 0;
+	private static int current_texture;
 	private int hp;
 	private DyingBrickEntity dying_effect;
 
-	public BrickEntity(float x, float y, int texture_id, int hp) {
+	public BrickEntity(float x, float y) {
 		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f),
-				texture_id));
+				getTexture()));
+		setHp();
 		this.view = null;
 		this.destroyed = false;
-		this.hp = hp;
 		this.dying_effect = null;
+	}
+
+	private void setHp() {
+		switch (current_texture) {
+			case R.drawable.tank:
+				this.hp = 3;
+			case R.drawable.witch:
+				this.hp = 2;
+			default:
+				this.hp = 1;
+		}
+	}
+	
+	private static int getTexture() {
+		if (ingame_count < 10)
+			current_texture = R.drawable.tank;
+		else if (ingame_count >= 10 && ingame_count < 20)
+			current_texture = R.drawable.witch;
+		else
+			current_texture = R.drawable.zumbi;
+		return current_texture;
 	}
 
 	public static void resetCount() {
