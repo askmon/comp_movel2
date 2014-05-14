@@ -198,6 +198,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 			background.loadGLTexture(gl, this.context);
 
 			gl.glEnable(GL10.GL_TEXTURE_2D);
+			gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glEnable(GL10.GL_BLEND);
 			gl.glShadeModel(GL10.GL_SMOOTH);
 			gl.glDisable(GL10.GL_DITHER);
 			gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);

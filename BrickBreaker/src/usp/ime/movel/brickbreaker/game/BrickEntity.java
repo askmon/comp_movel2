@@ -7,20 +7,25 @@ import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 import android.content.Intent;
 
 public class BrickEntity extends Entity {
-	
+
 	private TouchSurfaceView view;
 	private boolean destroyed;
 	private static int ingame_count = 0;
 	private int hp;
 
+<<<<<<< HEAD
 	public BrickEntity(float x, float y, int texture_id, int hp) {
 		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f),
 				texture_id));
+=======
+	public BrickEntity(float x, float y) {
+		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), R.drawable.pikachu));
+>>>>>>> Efeito dos tijolos morrendo
 		this.view = null;
 		this.destroyed = false;
 		this.hp = hp;
 	}
-	
+
 	public static void resetCount() {
 		ingame_count = 0;
 	}
@@ -48,8 +53,9 @@ public class BrickEntity extends Entity {
 	@Override
 	public void onGameRemove(TouchSurfaceView view) {
 		if (--ingame_count <= 0)
-			view.getContext().sendBroadcast(
-					new Intent(GameActivity.WIN_EVENT));
-		//Log.i("Brick count:", "" + ingame_count);
+			view.getContext().sendBroadcast(new Intent(GameActivity.WIN_EVENT));
+		view.addEntity(new DyingBrickEntity(getSprite().getGeometry().getX(),
+				getSprite().getGeometry().getY()));
+		// Log.i("Brick count:", "" + ingame_count);
 	}
 }

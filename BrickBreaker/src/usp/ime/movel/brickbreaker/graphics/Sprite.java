@@ -17,7 +17,9 @@ public class Sprite {
 
 	private Geometry geom;
 	private FloatBuffer vertexBuffer;
-	
+	private float[] color = {
+			1.0f, 1.0f, 1.0f, 1.0f
+	};
 
 	private static final float[] vertices = {
 		-1.0f, -1.0f,
@@ -75,6 +77,13 @@ public class Sprite {
 	public void setShape(float width, float height) {
 		this.geom.setShape(width, height);
 	}
+	
+	public void setColor(float red, float green, float blue, float alpha) {
+		this.color[0] = red;
+		this.color[1] = green;
+		this.color[2] = blue;
+		this.color[3] = alpha;
+	}
 
 	public void loadGLTexture(GL10 gl, Context context) {
 		if (next_texture >= MAX_TEXTURE_NUM) {
@@ -119,8 +128,12 @@ public class Sprite {
 
 		gl.glVertexPointer(2, GL10.GL_FLOAT, 0, vertexBuffer);
 		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
+		
+		gl.glColor4f(color[0], color[1], color[2], color[3]);
 
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+
+		gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);

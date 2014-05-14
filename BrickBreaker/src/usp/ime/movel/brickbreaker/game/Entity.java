@@ -11,7 +11,9 @@ public abstract class Entity {
 		this.sprite = sprite;
 	}
 	
-	public abstract void onGameAdd(TouchSurfaceView view);
+	public void onGameAdd(TouchSurfaceView view) {
+		
+	}
 	
 	public void onGameRemove(TouchSurfaceView view) {
 		
