@@ -11,7 +11,11 @@ public class BrickEntity extends Entity {
 	private TouchSurfaceView view;
 	private boolean destroyed;
 	private static int ingame_count = 0;
+<<<<<<< HEAD
 	private int hp;
+=======
+	private DyingBrickEntity dying_effect;
+>>>>>>> Efeito dos tijolos usa direção do impacto da bola
 
 <<<<<<< HEAD
 	public BrickEntity(float x, float y, int texture_id, int hp) {
@@ -23,7 +27,11 @@ public class BrickEntity extends Entity {
 >>>>>>> Efeito dos tijolos morrendo
 		this.view = null;
 		this.destroyed = false;
+<<<<<<< HEAD
 		this.hp = hp;
+=======
+		this.dying_effect = null;
+>>>>>>> Efeito dos tijolos usa direção do impacto da bola
 	}
 
 	public static void resetCount() {
@@ -41,12 +49,14 @@ public class BrickEntity extends Entity {
 		// TODO Auto-generated method stub
 	}
 
-	public void destroy() {
+	public void destroy(float impact_x, float impact_y) {
 		hp -= 1;
 		if (!destroyed && hp <= 0) {
 			view.removeEntity((Entity)this);
 			view.addScore();
 			destroyed = true;
+			dying_effect = new DyingBrickEntity(getSprite().getGeometry()
+					.getX(), getSprite().getGeometry().getY(), impact_x, impact_y);
 		}
 	}
 
@@ -54,8 +64,8 @@ public class BrickEntity extends Entity {
 	public void onGameRemove(TouchSurfaceView view) {
 		if (--ingame_count <= 0)
 			view.getContext().sendBroadcast(new Intent(GameActivity.WIN_EVENT));
-		view.addEntity(new DyingBrickEntity(getSprite().getGeometry().getX(),
-				getSprite().getGeometry().getY()));
+		if (dying_effect != null)
+			view.addEntity(dying_effect);
 		// Log.i("Brick count:", "" + ingame_count);
 	}
 }

@@ -99,6 +99,7 @@ public class BallEntity extends Entity {
 	}
 
 	protected void collideWithBrick(BrickEntity brick) {
+		float old_spd_x = speed_x, old_spd_y = speed_y;
 		Geometry brick_geom = brick.getSprite().getGeometry();
 		Geometry ball_geom = getSprite().getGeometry();
 		boolean left = ball_geom.getX() < brick_geom.getX()
@@ -117,7 +118,7 @@ public class BallEntity extends Entity {
 			bounce(brick_geom);
 		fall.seekTo(0);
 		fall.start();
-		brick.destroy();
+		brick.destroy(old_spd_x, old_spd_y);
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
