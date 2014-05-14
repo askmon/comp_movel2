@@ -17,7 +17,7 @@ public class DyingBrickEntity extends Entity {
 		this.y = y;
 		this.dx = dx;
 		this.dy = dy;
-		getSprite().setColor(0.5f, 0.5f, 0.5f, 0.9f);
+		getSprite().setColor(0.5f, 0.5f, 0.5f, 1.0f);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class DyingBrickEntity extends Entity {
 		Geometry geom = getSprite().getGeometry();
 		geom.setPosition(x + dx * 0.02f * time, y
 				+ (dy * 0.02f * time - 0.005f * time * time));
-		getSprite().setColor(0.5f, 0.5f, 0.5f, 0.9f - 0.05f * time);
+		getSprite().setColor(0.5f, 0.5f, 0.5f, 1.0f - 0.1f * time);
 		time++;
 		if (time >= 10)
 			view.removeEntity(this);
