@@ -43,7 +43,7 @@ public class GameActivity extends Activity {
 		for (int i = 0; i < 5; i++)
 			for (int j = 0; j < 10; j++)
 				glSurfaceView.addEntity(new BrickEntity(-0.45f + j / 10.0f,
-						0.2f + i / 10.0f));
+						0.2f + i / 10.0f, R.drawable.pikachu, 1));
 
 		last_music_pos = 0;
 		event_receiver = new BroadcastReceiver() {
