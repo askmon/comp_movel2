@@ -39,10 +39,14 @@ public class BallEntity extends Entity {
 
 		sprite_geom.translate(INITIAL_SPEED * speed_x, INITIAL_SPEED * speed_y);
 
-		if (sprite_geom.getX() < -view.getSpaceWidth()
-				|| sprite_geom.getX() > view.getSpaceWidth()) {
-			sprite_geom.setPosition(last_x, last_y);
-			speed_x = -speed_x;
+		if (sprite_geom.getX() > view.getSpaceWidth()) {
+			//sprite_geom.setPosition(last_x, last_y);
+			speed_x = -Math.abs(speed_x);
+		}
+		
+		if (sprite_geom.getX() < -view.getSpaceWidth()){
+			//sprite_geom.setPosition(last_x, last_y);
+			speed_x = Math.abs(speed_x);
 		}
 
 		if (sprite_geom.getY() > view.getSpaceHeight()*0.75f) {

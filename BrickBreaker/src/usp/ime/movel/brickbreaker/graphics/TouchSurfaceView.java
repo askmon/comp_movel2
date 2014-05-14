@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.Set;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -16,7 +16,7 @@ import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.game.Entity;
 import usp.ime.movel.brickbreaker.game.EntityVisitor;
-import android.app.Activity;
+import usp.ime.movel.brickbreaker.game.PowerEntity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
@@ -35,6 +35,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private TextView score;
 	private int points = 0;
 	private GameActivity context;
+	
+	private int tempo = 0;
 
 	private float[] unprojectViewMatrix = new float[16];
 	private float[] unprojectProjMatrix = new float[16];
@@ -140,6 +142,11 @@ public class TouchSurfaceView extends GLSurfaceView {
 			float elapsed = current - this.previous_time;
 			this.previous_time = current;
 			this.lag += elapsed;
+			tempo++;
+			if(tempo >= 600){
+				tempo = 0;
+				addEntity(new PowerEntity());
+			}
 
 			while (lag >= TIME_PER_FRAME) {
 				// update
