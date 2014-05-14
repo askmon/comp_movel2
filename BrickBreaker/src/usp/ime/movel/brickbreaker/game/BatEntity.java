@@ -1,6 +1,5 @@
 package usp.ime.movel.brickbreaker.game;
 
-import android.util.Log;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.OnTouchActionListener;

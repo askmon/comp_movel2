@@ -13,7 +13,7 @@ public class BrickEntity extends Entity {
 	private boolean destroyed;
 	private static int ingame_count = 0;
 	private static int current_texture;
-	private int hp;
+	private int hp, max_hp;
 	private DyingBrickEntity dying_effect;
 
 	public BrickEntity(float x, float y) {
@@ -27,13 +27,13 @@ public class BrickEntity extends Entity {
 	private void setHp() {
 		switch (current_texture) {
 		case R.drawable.tank:
-			this.hp = 3;
+			this.max_hp = this.hp = 3;
 			break;
 		case R.drawable.witch:
-			this.hp = 2;
+			this.max_hp = this.hp = 2;
 			break;
 		default:
-			this.hp = 1;
+			this.max_hp = this.hp = 1;
 			break;
 		}
 	}
@@ -73,6 +73,7 @@ public class BrickEntity extends Entity {
 					.getX(), getSprite().getGeometry().getY(), impact_x,
 					impact_y, current_texture);
 		}
+		getSprite().setColor(1.0f, 1.0f*hp/max_hp, 1.0f*hp/max_hp, 1.0f);
 	}
 
 	@Override
