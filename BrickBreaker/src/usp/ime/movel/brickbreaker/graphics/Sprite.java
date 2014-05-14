@@ -119,6 +119,7 @@ public class Sprite {
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(this.geom.getX(), this.geom.getY(), 0.0f);
+		gl.glRotatef(this.geom.getRotation(), 0.0f, 0.0f, 1.0f);
 		gl.glScalef(this.geom.getWidth(), this.geom.getHeight(), 0.5f);
 		
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[texture_cache.get(texture_id)]);

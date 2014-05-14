@@ -181,9 +181,9 @@ public class TouchSurfaceView extends GLSurfaceView {
 			float ratio = (float) width / height;
 			gl.glMatrixMode(GL10.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrthof(-ratio, ratio, -1.0f, 1.0f, -1.0f, 1.0f);
+			gl.glOrthof(-ratio, ratio, -1.0f, 1.0f, 1.0f, -1.0f);
 
-			Matrix.orthoM(unprojectProjMatrix, 0, -ratio, ratio, -1.0f, 1.0f,
+			Matrix.orthoM(unprojectProjMatrix, 0, -ratio, ratio, 1.0f, -1.0f,
 					-1.0f, 1.0f);
 			Matrix.setIdentityM(unprojectViewMatrix, 0);
 
