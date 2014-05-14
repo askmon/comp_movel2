@@ -33,4 +33,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
+	@Override
+	 public void onBackPressed() {
+		if(music != null){
+			music.release();
+		}
+	    super.onBackPressed();
+	 }
 }
