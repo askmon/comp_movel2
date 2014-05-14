@@ -28,10 +28,13 @@ public class BrickEntity extends Entity {
 		switch (current_texture) {
 		case R.drawable.tank:
 			this.hp = 3;
+			break;
 		case R.drawable.witch:
 			this.hp = 2;
+			break;
 		default:
 			this.hp = 1;
+			break;
 		}
 	}
 
