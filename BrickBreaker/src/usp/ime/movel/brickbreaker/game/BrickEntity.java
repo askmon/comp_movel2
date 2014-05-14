@@ -38,8 +38,8 @@ public class BrickEntity extends Entity {
 		// TODO Auto-generated method stub
 	}
 
-	public void destroy(float impact_x, float impact_y) {
-		hp -= 1;
+	public void inflictDamage(int ballDamage, float impact_x, float impact_y) {
+		hp -= ballDamage;
 		if (!destroyed && hp <= 0) {
 			view.removeEntity((Entity)this);
 			view.addScore();

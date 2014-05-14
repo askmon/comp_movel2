@@ -19,6 +19,8 @@ public class BallEntity extends Entity {
 
 	private int cooldown;
 
+	private int damage = 1;
+
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.soccer));
@@ -122,7 +124,7 @@ public class BallEntity extends Entity {
 			bounce(brick_geom);
 		fall.seekTo(0);
 		fall.start();
-		brick.destroy(old_spd_x, old_spd_y);
+		brick.inflictDamage(damage, old_spd_x, old_spd_y);
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
