@@ -5,7 +5,7 @@ import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 
-public class PowerEntity extends Entity {
+public class TypePowerEntity extends Entity {
 
 	private float speed_x, speed_y;
 
@@ -15,7 +15,7 @@ public class PowerEntity extends Entity {
 	
 	private int cooldown;
 
-	public PowerEntity() {
+	public TypePowerEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.interrogation));
 		setInitialSpeed();

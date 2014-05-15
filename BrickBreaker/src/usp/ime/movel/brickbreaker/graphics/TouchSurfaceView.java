@@ -89,6 +89,17 @@ public class TouchSurfaceView extends GLSurfaceView {
 		entity_set.add(entity);
 		entity.onGameAdd(this);
 	}
+	
+	public void addPowerEntity(Entity entity, GL10 gl, Context context) {
+		entity.getSprite().loadGLTexture(gl, context);
+		Set<Entity> entity_set = entities.get(entity.getClass());
+		if (entity_set == null) {
+			entity_set = new HashSet<Entity>();
+			entities.put(entity.getClass(), entity_set);
+		}
+		entity_set.add(entity);
+		entity.onGameAdd(this);
+	}
 
 	public void removeEntity(Entity entity) {
 		to_be_removed.add(entity);
@@ -140,11 +151,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 			float elapsed = current - this.previous_time;
 			this.previous_time = current;
 			this.lag += elapsed;
-			tempo++;
-			if(tempo >= 600){
-				tempo = 0;
-				addEntity(new PowerEntity());
-			}
 
 			while (lag >= TIME_PER_FRAME) {
 				// update
@@ -158,6 +164,11 @@ public class TouchSurfaceView extends GLSurfaceView {
 					doRemoveEntity(removed);
 				to_be_removed.clear();
 				lag -= TIME_PER_FRAME;
+				tempo++;
+				if(tempo >= 300){
+					tempo = 0;
+					addPowerEntity(new PowerEntity(), gl, Renderer.this.context);
+				}
 			}
 
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -295,5 +306,9 @@ public class TouchSurfaceView extends GLSurfaceView {
 				screenHeight - e.getY(p));
 		renderer.touchActionDown(e.getPointerId(p), position[0],
 				position[1]);
+	}
+	
+	public int getTempo(){
+		return tempo;
 	}
 }

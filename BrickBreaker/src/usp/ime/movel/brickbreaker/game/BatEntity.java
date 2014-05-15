@@ -10,7 +10,8 @@ public class BatEntity extends Entity implements OnTouchActionListener {
 
 	private float[] move_dirs;
 	private int inclination;
-	private static final float SPEED = 1.0e-2f;
+	private float speed = 1.0e-2f;
+	private int mikasa = 0;
 
 	public BatEntity() {
 		super(
@@ -40,7 +41,7 @@ public class BatEntity extends Entity implements OnTouchActionListener {
 			inclination++;
 		
 		for (int i = 0; i < move_dirs.length; i++) {
-			sprite_geom.translate(move_dirs[i]*SPEED, 0.0f);
+			sprite_geom.translate(move_dirs[i]*speed, 0.0f);
 			inclination += (int)2*move_dirs[i];
 			inclination = Math.max(-10, Math.min(10, inclination));
 		}
@@ -51,6 +52,10 @@ public class BatEntity extends Entity implements OnTouchActionListener {
 		}
 		
 		getSprite().getGeometry().setRotation(-15.0f*inclination/10.0f);
+		
+		if(view.getTempo() >= 295){
+			this.setMikasa(0);
+		}
 	}
 
 	@Override
@@ -63,6 +68,19 @@ public class BatEntity extends Entity implements OnTouchActionListener {
 	public void onTouchActionUp(int pointer_id, float x, float y) {
 		if (pointer_id <= move_dirs.length)
 			move_dirs[pointer_id] = 0.0f;
+	}
+
+	public int getMikasa() {
+		return mikasa;
+	}
+
+	public void setMikasa(int mikasa) {
+		if (mikasa == 1){
+			this.speed = this.speed * 2;
+		}
+		else{
+			this.speed = 1.0e-2f;;
+		}
 	}
 
 }
