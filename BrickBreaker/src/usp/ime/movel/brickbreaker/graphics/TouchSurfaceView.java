@@ -134,6 +134,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 		private Context context;
 		private float previous_time;
 		private float lag;
+		
+		private final int MAX_STEPS_PER_FRAME = 10;
 
 		public Renderer(Context context) {
 			this.context = context;
@@ -152,7 +154,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 			this.previous_time = current;
 			this.lag += elapsed;
 
-			while (lag >= TIME_PER_FRAME) {
+			for (int i = 0; i < MAX_STEPS_PER_FRAME && lag >= TIME_PER_FRAME; i++) {
 				// update
 				visitEntities(new EntityVisitor() {
 					@Override
