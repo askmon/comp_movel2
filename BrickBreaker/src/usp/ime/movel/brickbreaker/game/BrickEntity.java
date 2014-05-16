@@ -12,16 +12,17 @@ public class BrickEntity extends Entity {
 	private TouchSurfaceView view;
 	private boolean destroyed;
 	private static int ingame_count = 0;
-	private static int current_texture;
+	private int texture_id;
 	private int hp, max_hp;
 	private float impact_x, impact_y;
 	private float center_x, center_y;
 	private int impact_timer;
 	private DyingBrickEntity dying_effect;
 
-	public BrickEntity(float x, float y) {
-		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), getTexture()));
-		setHp();
+	private BrickEntity(float x, float y, int texture_id, int hp) {
+		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), texture_id));
+		this.texture_id = texture_id;
+		this.max_hp = this.hp = hp;
 		this.view = null;
 		this.destroyed = false;
 		this.dying_effect = null;
@@ -31,29 +32,17 @@ public class BrickEntity extends Entity {
 		this.impact_y = 0.0f;
 		this.impact_timer = 0;
 	}
-
-	private void setHp() {
-		switch (current_texture) {
-		case R.drawable.tank:
-			this.max_hp = this.hp = 3;
-			break;
-		case R.drawable.witch:
-			this.max_hp = this.hp = 2;
-			break;
-		default:
-			this.max_hp = this.hp = 1;
-			break;
-		}
+	
+	public static BrickEntity makeZombie(float x, float y) {
+		return new BrickEntity(x, y, R.drawable.zumbi, 1);
 	}
-
-	private static int getTexture() {
-		if (ingame_count < 30)
-			current_texture = R.drawable.zumbi;
-		else if (ingame_count >= 30 && ingame_count < 40)
-			current_texture = R.drawable.witch;
-		else
-			current_texture = R.drawable.tank;
-		return current_texture;
+	
+	public static BrickEntity makeWitch(float x, float y) {
+		return new BrickEntity(x, y, R.drawable.witch, 2);
+	}
+	
+	public static BrickEntity makeTank(float x, float y) {
+		return new BrickEntity(x, y, R.drawable.tank, 3);
 	}
 
 	public static void resetCount() {
@@ -82,7 +71,7 @@ public class BrickEntity extends Entity {
 			destroyed = true;
 			dying_effect = new DyingBrickEntity(getSprite().getGeometry()
 					.getX(), getSprite().getGeometry().getY(), impact_x,
-					impact_y, current_texture);
+					impact_y, texture_id);
 		} else {
 			this.impact_timer = 15;
 			this.impact_x = impact_x;
