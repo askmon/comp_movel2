@@ -19,5 +19,21 @@
     android:layout_marginRight="22dp"
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:textColor="@android:color/white" />
+
+<ImageView
+    android:id="@+id/imageView1"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:src="@drawable/left" />
+
+<ImageView
+    android:id="@+id/imageView2"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:src="@drawable/right" />
  
 </RelativeLayout>

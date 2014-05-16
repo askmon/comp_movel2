@@ -164,7 +164,7 @@ public class BallEntity extends Entity {
 
 	public void setAnnie(int annie) {
 		if (annie == 1){
-			this.initial_speed = this.initial_speed * 2;
+			this.initial_speed = this.initial_speed * 1.5f;
 		}
 		else{
 			this.initial_speed = 2.0e-2f;;
