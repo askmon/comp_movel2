@@ -39,7 +39,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 	private Map<Class<?>, Set<Entity>> entities;
 	private List<OnTouchActionListener> touch_listeners;
-	private Queue<Entity> to_be_removed;
+	private Queue<Entity> to_be_removed, to_be_added;
 
 	private LifeDisplay life_display;
 
@@ -53,6 +53,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 		entities = new HashMap<Class<?>, Set<Entity>>();
 		touch_listeners = new LinkedList<OnTouchActionListener>();
 		to_be_removed = new LinkedList<Entity>();
+		to_be_added = new LinkedList<Entity>();
 		life_display = new LifeDisplay(this, 3);
 		this.context = (GameActivity)context;
 	}
@@ -80,8 +81,10 @@ public class TouchSurfaceView extends GLSurfaceView {
 	}
 	
 	public void addEntity(Entity entity) {
-		if (last_gl != null)
-			entity.getSprite().loadGLTexture(last_gl, context);
+		to_be_added.add(entity);
+	}
+	
+	private void doAddEntity(Entity entity) {
 		Set<Entity> entity_set = entities.get(entity.getClass());
 		if (entity_set == null) {
 			entity_set = new HashSet<Entity>();
@@ -147,9 +150,15 @@ public class TouchSurfaceView extends GLSurfaceView {
 			float elapsed = current - this.previous_time;
 			this.previous_time = current;
 			this.lag += elapsed;
+			last_gl = gl;
 
 			for (int i = 0; i < MAX_STEPS_PER_FRAME && lag >= TIME_PER_FRAME; i++) {
 				// update
+				for (Entity added : to_be_added) {
+					added.getSprite().loadGLTexture(gl, context);
+					doAddEntity(added);
+				}
+				to_be_added.clear();
 				visitEntities(new EntityVisitor() {
 					@Override
 					public void visit(Entity entity) {
@@ -205,6 +214,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 			});
 
 			background.loadGLTexture(gl, this.context);
+			life_display.loadGLTexture(gl, this.context);
 
 			gl.glEnable(GL10.GL_TEXTURE_2D);
 			gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
