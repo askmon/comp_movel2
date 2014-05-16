@@ -14,15 +14,17 @@ public class BrickEntity extends Entity {
 	private static int ingame_count = 0;
 	private int texture_id;
 	private int hp, max_hp;
+	private int points;
 	private float impact_x, impact_y;
 	private float center_x, center_y;
 	private int impact_timer;
 	private DyingBrickEntity dying_effect;
 
-	private BrickEntity(float x, float y, int texture_id, int hp) {
+	private BrickEntity(float x, float y, int texture_id, int hp, int points) {
 		super(new Sprite(new Geometry(x, y, 0.05f, 0.05f), texture_id));
 		this.texture_id = texture_id;
 		this.max_hp = this.hp = hp;
+		this.points = points;
 		this.view = null;
 		this.destroyed = false;
 		this.dying_effect = null;
@@ -34,15 +36,15 @@ public class BrickEntity extends Entity {
 	}
 	
 	public static BrickEntity makeZombie(float x, float y) {
-		return new BrickEntity(x, y, R.drawable.zumbi, 1);
+		return new BrickEntity(x, y, R.drawable.zumbi, 1, 500);
 	}
 	
 	public static BrickEntity makeWitch(float x, float y) {
-		return new BrickEntity(x, y, R.drawable.witch, 2);
+		return new BrickEntity(x, y, R.drawable.witch, 2, 1000);
 	}
 	
 	public static BrickEntity makeTank(float x, float y) {
-		return new BrickEntity(x, y, R.drawable.tank, 3);
+		return new BrickEntity(x, y, R.drawable.tank, 3, 5000);
 	}
 
 	public static void resetCount() {
@@ -65,9 +67,10 @@ public class BrickEntity extends Entity {
 
 	public void inflictDamage(int ballDamage, float impact_x, float impact_y) {
 		hp -= ballDamage;
+		view.addScore(100);
 		if (!destroyed && hp <= 0) {
 			view.removeEntity((Entity) this);
-			view.addScore();
+			view.addScore(points);
 			destroyed = true;
 			dying_effect = new DyingBrickEntity(getSprite().getGeometry()
 					.getX(), getSprite().getGeometry().getY(), impact_x,
