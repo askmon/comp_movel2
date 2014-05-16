@@ -75,8 +75,8 @@ public class PowerEntity extends Entity {
 		Random rand = new Random(); 
 		Double pickedNumber = rand.nextDouble();
 		if(pickedNumber < 0.5){
-			bat.setMikasa(1);
-			view.setPowerup(1);
+			bat.setMikasa(295);
+			view.addEntity(TypePowerEntity.makeMikasa(295));
 		}
 		else{
 			view.visitEntities(BallEntity.class, new EntityVisitor() {
@@ -86,7 +86,7 @@ public class PowerEntity extends Entity {
 				}
 			});
 			setAnnieBall((BallEntity)this_entity);
-			view.setPowerup(2);
+			view.addEntity(TypePowerEntity.makeAnnie(200));
 		}
 	}
 
@@ -110,7 +110,7 @@ public class PowerEntity extends Entity {
 	}
 	
 	private void setAnnieBall(BallEntity ball) {
-		ball.setAnnie(1);
+		ball.setAnnie(200);
 	}
 	
 	@Override
