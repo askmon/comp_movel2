@@ -1,5 +1,7 @@
 package usp.ime.movel.brickbreaker;
 
+import java.util.Random;
+
 import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.game.BatEntity;
 import usp.ime.movel.brickbreaker.game.BrickEntity;
@@ -22,6 +24,7 @@ public class GameActivity extends Activity {
 	private BroadcastReceiver event_receiver;
 	private TextView score;
 	private int points;
+	private int level = 1;
 
 	public final static String DEFEAT_EVENT = "usp.ime.movel.brickbreaker.defeat_event";
 	public static final String WIN_EVENT = "usp.ime.movel.brickbreaker.win_event";
@@ -41,13 +44,33 @@ public class GameActivity extends Activity {
 		glSurfaceView.addEntity(new BatEntity());
 		BrickEntity.resetCount();
 
+		createBricks(level);
+
+		last_music_pos = 0;
+		event_receiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if(intent.getAction().equals(WIN_EVENT)){
+					level++;
+					createBricks(level);
+				}
+				else{
+					GameActivity.this.finish();
+				}
+			}
+		};
+	}
+
+	private void createBricks(int level) {
+		Random rand = new Random(); 
+		Double pickedNumber = rand.nextDouble();
 		for (int i = 0; i < 5; i++)
 			for (int j = 0; j < 10; j++) {
 				BrickEntity brick;
-				if (i < 3)
+				if (pickedNumber < 0.7/level)
 					brick = BrickEntity.makeZombie(-0.45f + j / 10.0f,
 							0.2f + i / 10.0f);
-				else if (i < 4)
+				else if (pickedNumber >= 0.7/level && pickedNumber <= 0.9)
 					brick = BrickEntity.makeWitch(-0.45f + j / 10.0f,
 							0.2f + i / 10.0f);
 				else
@@ -55,16 +78,8 @@ public class GameActivity extends Activity {
 							0.2f + i / 10.0f);
 				glSurfaceView.addEntity(brick);
 			}
-
-		last_music_pos = 0;
-		event_receiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				GameActivity.this.finish();
-			}
-		};
 	}
-
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
