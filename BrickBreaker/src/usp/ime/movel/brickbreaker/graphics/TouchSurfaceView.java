@@ -62,8 +62,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 		this.context = (GameActivity)context;
 	}
 	
-	public void addScore(){
-		points++;
+	public void addScore(int quantity){
+		points += quantity;
 		context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
