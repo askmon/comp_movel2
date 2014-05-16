@@ -122,15 +122,19 @@ public class BallEntity extends Entity {
 			speed_y = -speed_y;
 		else
 			bounce(brick_geom);
-		fall.seekTo(0);
-		fall.start();
+		if (fall != null) {
+			fall.seekTo(0);
+			fall.start();
+		}
 		brick.inflictDamage(damage, old_spd_x, old_spd_y);
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
 		bounce(bat_geom);
-		ploc.seekTo(0);
-		ploc.start();
+		if (ploc != null) {
+			ploc.seekTo(0);
+			ploc.start();
+		}
 	}
 
 	private void bounce(Geometry other) {
