@@ -29,22 +29,32 @@ public class GameActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.game);
-		glSurfaceView = (TouchSurfaceView)findViewById(R.id.gamescreen);
-		score = (TextView)findViewById(R.id.score);
+		setContentView(R.layout.game);
+		glSurfaceView = (TouchSurfaceView) findViewById(R.id.gamescreen);
+		score = (TextView) findViewById(R.id.score);
 		score.setText("Score: " + points);
-		//setContentView(glSurfaceView);
+		// setContentView(glSurfaceView);
 
 		glSurfaceView.setFocusableInTouchMode(true);
 		glSurfaceView.requestFocus();
 		glSurfaceView.addEntity(new BallEntity());
 		glSurfaceView.addEntity(new BatEntity());
 		BrickEntity.resetCount();
-		
+
 		for (int i = 0; i < 5; i++)
-			for (int j = 0; j < 10; j++)
-				glSurfaceView.addEntity(new BrickEntity(-0.45f + j / 10.0f,
-						0.2f + i / 10.0f));
+			for (int j = 0; j < 10; j++) {
+				BrickEntity brick;
+				if (i < 3)
+					brick = BrickEntity.makeZombie(-0.45f + j / 10.0f,
+							0.2f + i / 10.0f);
+				else if (i < 4)
+					brick = BrickEntity.makeWitch(-0.45f + j / 10.0f,
+							0.2f + i / 10.0f);
+				else
+					brick = BrickEntity.makeTank(-0.45f + j / 10.0f,
+							0.2f + i / 10.0f);
+				glSurfaceView.addEntity(brick);
+			}
 
 		last_music_pos = 0;
 		event_receiver = new BroadcastReceiver() {
@@ -81,8 +91,8 @@ public class GameActivity extends Activity {
 		glSurfaceView.onPause();
 		unregisterReceiver(event_receiver);
 	}
-	
-	public void setScore(int points){
+
+	public void setScore(int points) {
 		this.score.setText("Score: " + points);
 	}
 }
