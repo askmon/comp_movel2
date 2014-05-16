@@ -3,6 +3,7 @@ package usp.ime.movel.brickbreaker;
 import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.game.BatEntity;
 import usp.ime.movel.brickbreaker.game.BrickEntity;
+import usp.ime.movel.brickbreaker.game.SpawnerEntity;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -55,6 +56,7 @@ public class GameActivity extends Activity {
 							0.2f + i / 10.0f);
 				glSurfaceView.addEntity(brick);
 			}
+		glSurfaceView.addEntity(new SpawnerEntity());
 
 		last_music_pos = 0;
 		event_receiver = new BroadcastReceiver() {

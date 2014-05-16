@@ -14,7 +14,7 @@ public class BallEntity extends Entity {
 
 	private float initial_speed = 2.0e-2f;
 
-	private int annie = 0;
+	private int annie_time = 0;
 	
 	private MediaPlayer ploc = null;
 	private MediaPlayer fall = null;
@@ -27,6 +27,12 @@ public class BallEntity extends Entity {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.soccer));
 		setInitialSpeed();
+	}
+	
+	public float getSpeed() {
+		if (annie_time > 0)
+			return this.initial_speed * 1.5f;
+		return this.initial_speed;
 	}
 
 	@Override
@@ -82,9 +88,7 @@ public class BallEntity extends Entity {
 			}
 		});
 		
-		if(view.getTempo() >= 200){
-			this.setAnnie(0);
-		}
+		annie_time--;
 	}
 
 	private void setInitialSpeed() {
@@ -159,16 +163,11 @@ public class BallEntity extends Entity {
 	}
 
 	public int getAnnie() {
-		return annie;
+		return annie_time;
 	}
 
-	public void setAnnie(int annie) {
-		if (annie == 1){
-			this.initial_speed = this.initial_speed * 2;
-		}
-		else{
-			this.initial_speed = 2.0e-2f;;
-		}
+	public void setAnnie(int time) {
+		annie_time = time;
 	}
 
 }

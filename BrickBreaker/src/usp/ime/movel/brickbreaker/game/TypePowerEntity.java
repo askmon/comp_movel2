@@ -6,21 +6,24 @@ import usp.ime.movel.brickbreaker.graphics.Sprite;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 
 public class TypePowerEntity extends Entity {
-
 	
-	private int tempoExistencia = 0;
+	private int time = 0;
+	
+	public final static int MIKASA_POWER = 1;
+	public final static int ANNIE_POWER = 2;
 
-	public TypePowerEntity(int type) {
+	private TypePowerEntity(int type, int time) {
 		super(new Sprite(new Geometry(0.0f, -0.875f, 0.1f, 0.1f),
 				getTexId(type)));
-		switch(type){
-			case 1:
-				this.setTempoExistencia(295);
-				break;
-			case 2:
-				this.setTempoExistencia(200);
-				break;
-		}
+		this.time = time;
+	}
+	
+	public static TypePowerEntity makeMikasa(int time) {
+		return new TypePowerEntity(MIKASA_POWER, time);
+	}
+	
+	public static TypePowerEntity makeAnnie(int time) {
+		return new TypePowerEntity(ANNIE_POWER, time);
 	}
 
 	private static int getTexId(int type) {
@@ -35,7 +38,7 @@ public class TypePowerEntity extends Entity {
 
 	@Override
 	public void onUpdate(TouchSurfaceView view) {
-		if(view.getTempo() >= tempoExistencia){
+		if(--time <= 0){
 			destroy(view);
 		}
 	}
@@ -49,16 +52,11 @@ public class TypePowerEntity extends Entity {
 	}
 
 	public int getTempoExistencia() {
-		return tempoExistencia;
+		return time;
 	}
 
 	public void setTempoExistencia(int tempoExistencia) {
-		this.tempoExistencia = tempoExistencia;
-	}
-	
-	@Override
-	public void onGameRemove(TouchSurfaceView view) {
-		view.setPowerup(0);
+		this.time = tempoExistencia;
 	}
 
 }

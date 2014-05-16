@@ -16,29 +16,23 @@ import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.game.Entity;
 import usp.ime.movel.brickbreaker.game.EntityVisitor;
-import usp.ime.movel.brickbreaker.game.PowerEntity;
-import usp.ime.movel.brickbreaker.game.TypePowerEntity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class TouchSurfaceView extends GLSurfaceView {
 
 	private Renderer renderer;
+	private GL10 last_gl;
 
 	private int screenWidth;
 	private int screenHeight;
 	
 	private int points = 0;
 	private GameActivity context;
-	
-	private int tempo = 0;
-		
-	private int powerup = 0;
 
 	private float[] unprojectViewMatrix = new float[16];
 	private float[] unprojectProjMatrix = new float[16];
@@ -54,6 +48,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 	public TouchSurfaceView(Context context, AttributeSet attr) {
 		super(context, attr);
 		renderer = new Renderer(context);
+		last_gl = null;
 		setRenderer(renderer);
 		entities = new HashMap<Class<?>, Set<Entity>>();
 		touch_listeners = new LinkedList<OnTouchActionListener>();
@@ -85,17 +80,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 	}
 	
 	public void addEntity(Entity entity) {
-		Set<Entity> entity_set = entities.get(entity.getClass());
-		if (entity_set == null) {
-			entity_set = new HashSet<Entity>();
-			entities.put(entity.getClass(), entity_set);
-		}
-		entity_set.add(entity);
-		entity.onGameAdd(this);
-	}
-	
-	public void addPowerEntity(Entity entity, GL10 gl, Context context) {
-		entity.getSprite().loadGLTexture(gl, context);
+		if (last_gl != null)
+			entity.getSprite().loadGLTexture(last_gl, context);
 		Set<Entity> entity_set = entities.get(entity.getClass());
 		if (entity_set == null) {
 			entity_set = new HashSet<Entity>();
@@ -120,6 +106,10 @@ public class TouchSurfaceView extends GLSurfaceView {
 	public void visitEntities(Class<?> entity_class, EntityVisitor visitor) {
 		for (Entity entity : entities.get(entity_class))
 			visitor.visit(entity);
+	}
+
+	public GL10 getLastGL() {
+		return this.last_gl;
 	}
 
 	public void visitEntities(EntityVisitor visitor) {
@@ -170,21 +160,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 					doRemoveEntity(removed);
 				to_be_removed.clear();
 				lag -= TIME_PER_FRAME;
-				tempo++;
-				if(tempo >= 300){
-					tempo = 0;
-					addPowerEntity(new PowerEntity(getSpaceWidth()), gl, Renderer.this.context);
-				}
-				switch(powerup){
-				case 0:
-					break;
-				case 1:
-					addPowerEntity(new TypePowerEntity(1), gl, context);
-					break;
-				case 2:
-					addPowerEntity(new TypePowerEntity(2), gl, context);
-					break;
-				}
 				
 			}
 
@@ -221,6 +196,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 		@Override
 		public void onSurfaceCreated(final GL10 gl, EGLConfig config) {
 			Sprite.clearCache();
+			last_gl = gl;
 			visitEntities(new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
@@ -323,13 +299,5 @@ public class TouchSurfaceView extends GLSurfaceView {
 				screenHeight - e.getY(p));
 		renderer.touchActionDown(e.getPointerId(p), position[0],
 				position[1]);
-	}
-	
-	public int getTempo(){
-		return tempo;
-	}
-
-	public void setPowerup(int powerup) {
-		this.powerup = powerup;
 	}
 }
