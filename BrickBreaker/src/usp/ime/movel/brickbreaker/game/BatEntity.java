@@ -47,7 +47,7 @@ public class BatEntity extends Entity implements OnTouchActionListener {
 			inclination++;
 		
 		for (int i = 0; i < move_dirs.length; i++) {
-			sprite_geom.translate(move_dirs[i]*speed, 0.0f);
+			sprite_geom.translate(move_dirs[i]*getSpeed(), 0.0f);
 			inclination += (int)2*move_dirs[i];
 			inclination = Math.max(-10, Math.min(10, inclination));
 		}

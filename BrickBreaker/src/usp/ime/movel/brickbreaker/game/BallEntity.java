@@ -47,7 +47,7 @@ public class BallEntity extends Entity {
 		final Geometry sprite_geom = getSprite().getGeometry();
 		final float last_x = sprite_geom.getX(), last_y = sprite_geom.getY();
 
-		sprite_geom.translate(initial_speed * speed_x, initial_speed * speed_y);
+		sprite_geom.translate(getSpeed() * speed_x, getSpeed() * speed_y);
 
 		if (sprite_geom.getX() > view.getSpaceWidth()) {
 			//sprite_geom.setPosition(last_x, last_y);
