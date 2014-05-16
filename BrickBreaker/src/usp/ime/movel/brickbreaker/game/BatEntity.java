@@ -60,6 +60,8 @@ public class BatEntity extends Entity implements OnTouchActionListener {
 
 	@Override
 	public void onTouchActionDown(int pointer_id, float x, float y) {
+		if (y <= 0.75f)
+			return;
 		if (pointer_id <= move_dirs.length)
 			move_dirs[pointer_id] = (x < 0) ? -1.0f : 1.0f;
 	}
