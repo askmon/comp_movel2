@@ -1,7 +1,7 @@
 package usp.ime.movel.brickbreaker.game;
 
-import android.content.Intent;
-import usp.ime.movel.brickbreaker.GameActivity;
+import java.util.Random;
+
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
@@ -14,6 +14,10 @@ public class PowerEntity extends Entity {
 	private static final float INITIAL_SPEED = 2.0e-2f;
 
 	private int destroy_this = 0;
+	
+	private int collide = 0;
+	
+	private Entity this_entity;
 	
 	private int cooldown;
 
@@ -45,20 +49,39 @@ public class PowerEntity extends Entity {
 			public void visit(Entity entity) {
 				Geometry other_geometry = entity.getSprite().getGeometry();
 				if (sprite_geom.collidesWith(other_geometry)) {
-					collideWithBat((BatEntity)entity);
 					destroy_this = 1;
+					collide = 1;
+					this_entity = entity;
 				}
 			}
 		});
+		if(collide == 1){
+			collideWithBat((BatEntity)this_entity, view);
+			collide = 0;
+		}
 		if(destroy_this == 1){
 			destroy(view);
 			destroy_this = 0;
 		}
 	}
 
-	private void addRandomPower(TouchSurfaceView view) {
-		// TODO Auto-generated method stub
-		
+	private void addRandomPower(TouchSurfaceView view, BatEntity bat) {
+		Random rand = new Random(); 
+		Double pickedNumber = rand.nextDouble();
+		if(pickedNumber < 0.5){
+			bat.setMikasa(1);
+			view.setPowerup(1);
+		}
+		else{
+			view.visitEntities(BallEntity.class, new EntityVisitor() {
+				@Override
+				public void visit(Entity entity) {
+					this_entity = (BallEntity) entity;
+				}
+			});
+			setAnnieBall((BallEntity)this_entity);
+			view.setPowerup(2);
+		}
 	}
 
 	private void destroy(TouchSurfaceView view){
@@ -76,13 +99,16 @@ public class PowerEntity extends Entity {
 		//fall = MediaPlayer.create(view.getContext(), R.raw.punch);
 	}
 
-	private void collideWithBat(BatEntity bat) {
-		bat.setMikasa(1);
+	private void collideWithBat(BatEntity bat, TouchSurfaceView view) {
+		addRandomPower(view, bat);
+	}
+	
+	private void setAnnieBall(BallEntity ball) {
+		ball.setAnnie(1);
 	}
 	
 	@Override
 	public void onGameRemove(TouchSurfaceView view) {
-		view.setPowerup(1);
 	}
 
 }

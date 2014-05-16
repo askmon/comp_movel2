@@ -1,6 +1,5 @@
 package usp.ime.movel.brickbreaker.game;
 
-import android.util.Log;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
@@ -13,14 +12,30 @@ public class TypePowerEntity extends Entity {
 
 	public TypePowerEntity(int type) {
 		super(new Sprite(new Geometry(0.0f, -0.875f, 0.1f, 0.1f),
-				R.drawable.mikasa));
-		this.setTempoExistencia(295);
+				getTexId(type)));
+		switch(type){
+			case 1:
+				this.setTempoExistencia(295);
+				break;
+			case 2:
+				this.setTempoExistencia(200);
+				break;
+		}
+	}
+
+	private static int getTexId(int type) {
+		switch(type){
+		case 1:
+			return R.drawable.mikasa;
+		case 2:
+			return R.drawable.annie;
+		}
+		return 0;
 	}
 
 	@Override
 	public void onUpdate(TouchSurfaceView view) {
 		if(view.getTempo() >= tempoExistencia){
-			Log.i("Tempo mikasa:", ""+view.getTempo());
 			destroy(view);
 		}
 	}

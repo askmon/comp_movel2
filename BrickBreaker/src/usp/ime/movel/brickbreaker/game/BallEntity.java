@@ -12,8 +12,10 @@ public class BallEntity extends Entity {
 
 	private float speed_x, speed_y;
 
-	private static final float INITIAL_SPEED = 2.0e-2f;
+	private float initial_speed = 2.0e-2f;
 
+	private int annie = 0;
+	
 	private MediaPlayer ploc = null;
 	private MediaPlayer fall = null;
 
@@ -39,7 +41,7 @@ public class BallEntity extends Entity {
 		final Geometry sprite_geom = getSprite().getGeometry();
 		final float last_x = sprite_geom.getX(), last_y = sprite_geom.getY();
 
-		sprite_geom.translate(INITIAL_SPEED * speed_x, INITIAL_SPEED * speed_y);
+		sprite_geom.translate(initial_speed * speed_x, initial_speed * speed_y);
 
 		if (sprite_geom.getX() > view.getSpaceWidth()) {
 			//sprite_geom.setPosition(last_x, last_y);
@@ -79,6 +81,10 @@ public class BallEntity extends Entity {
 				}
 			}
 		});
+		
+		if(view.getTempo() >= 200){
+			this.setAnnie(0);
+		}
 	}
 
 	private void setInitialSpeed() {
@@ -150,6 +156,19 @@ public class BallEntity extends Entity {
 		float dist = geom.getCollisionRadius() + other.getCollisionRadius();
 		geom.setPosition(other.getX() + dist * (float) Math.cos(angle),
 				other.getY() + dist * (float) Math.sin(angle));
+	}
+
+	public int getAnnie() {
+		return annie;
+	}
+
+	public void setAnnie(int annie) {
+		if (annie == 1){
+			this.initial_speed = this.initial_speed * 2;
+		}
+		else{
+			this.initial_speed = 2.0e-2f;;
+		}
 	}
 
 }

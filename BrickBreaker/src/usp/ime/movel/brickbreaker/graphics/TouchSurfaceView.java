@@ -178,10 +178,13 @@ public class TouchSurfaceView extends GLSurfaceView {
 				}
 				switch(powerup){
 				case 0:
-					
 					break;
 				case 1:
 					addPowerEntity(new TypePowerEntity(1), gl, context);
+					break;
+				case 2:
+					addPowerEntity(new TypePowerEntity(2), gl, context);
+					break;
 				}
 				
 			}
