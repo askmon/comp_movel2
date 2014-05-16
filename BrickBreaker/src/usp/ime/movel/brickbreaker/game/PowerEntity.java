@@ -2,6 +2,7 @@ package usp.ime.movel.brickbreaker.game;
 
 import java.util.Random;
 
+import android.util.Log;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
@@ -21,11 +22,16 @@ public class PowerEntity extends Entity {
 	
 	private int cooldown;
 
-	public PowerEntity() {
-		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
+	public PowerEntity(float width) {
+		super(new Sprite(new Geometry(getX(width), 0.0f, 0.04f, 0.04f),
 				R.drawable.interrogation));
+		Log.i("X", ""+ width);
 		setInitialSpeed();
 		destroy_this = 0;
+	}
+	
+	private static float getX(float width) {
+		return (-width + (float)(Math.random() * 2 * width));
 	}
 
 	@Override

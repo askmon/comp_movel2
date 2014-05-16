@@ -37,7 +37,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private GameActivity context;
 	
 	private int tempo = 0;
-	
+		
 	private int powerup = 0;
 
 	private float[] unprojectViewMatrix = new float[16];
@@ -107,7 +107,6 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 	public void removeEntity(Entity entity) {
 		to_be_removed.add(entity);
-		Log.i("Nome",entity.getClass().getName());
 	}
 
 	private void doRemoveEntity(Entity entity) {
@@ -174,7 +173,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 				tempo++;
 				if(tempo >= 300){
 					tempo = 0;
-					addPowerEntity(new PowerEntity(), gl, Renderer.this.context);
+					addPowerEntity(new PowerEntity(getSpaceWidth()), gl, Renderer.this.context);
 				}
 				switch(powerup){
 				case 0:
