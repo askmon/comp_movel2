@@ -1,5 +1,7 @@
 package usp.ime.movel.brickbreaker.game;
 
+import android.content.Intent;
+import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.graphics.Geometry;
 import usp.ime.movel.brickbreaker.graphics.Sprite;
@@ -76,6 +78,11 @@ public class PowerEntity extends Entity {
 
 	private void collideWithBat(BatEntity bat) {
 		bat.setMikasa(1);
+	}
+	
+	@Override
+	public void onGameRemove(TouchSurfaceView view) {
+		view.setPowerup(1);
 	}
 
 }

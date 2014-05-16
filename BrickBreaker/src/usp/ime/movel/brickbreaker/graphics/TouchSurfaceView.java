@@ -17,11 +17,13 @@ import usp.ime.movel.brickbreaker.R;
 import usp.ime.movel.brickbreaker.game.Entity;
 import usp.ime.movel.brickbreaker.game.EntityVisitor;
 import usp.ime.movel.brickbreaker.game.PowerEntity;
+import usp.ime.movel.brickbreaker.game.TypePowerEntity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.Matrix;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class TouchSurfaceView extends GLSurfaceView {
@@ -35,6 +37,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private GameActivity context;
 	
 	private int tempo = 0;
+	
+	private int powerup = 0;
 
 	private float[] unprojectViewMatrix = new float[16];
 	private float[] unprojectProjMatrix = new float[16];
@@ -103,6 +107,7 @@ public class TouchSurfaceView extends GLSurfaceView {
 
 	public void removeEntity(Entity entity) {
 		to_be_removed.add(entity);
+		Log.i("Nome",entity.getClass().getName());
 	}
 
 	private void doRemoveEntity(Entity entity) {
@@ -171,6 +176,14 @@ public class TouchSurfaceView extends GLSurfaceView {
 					tempo = 0;
 					addPowerEntity(new PowerEntity(), gl, Renderer.this.context);
 				}
+				switch(powerup){
+				case 0:
+					
+					break;
+				case 1:
+					addPowerEntity(new TypePowerEntity(1), gl, context);
+				}
+				
 			}
 
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -312,5 +325,9 @@ public class TouchSurfaceView extends GLSurfaceView {
 	
 	public int getTempo(){
 		return tempo;
+	}
+
+	public void setPowerup(int powerup) {
+		this.powerup = powerup;
 	}
 }
