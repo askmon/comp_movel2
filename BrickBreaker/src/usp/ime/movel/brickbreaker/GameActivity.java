@@ -52,10 +52,12 @@ public class GameActivity extends Activity {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				if(intent.getAction().equals(WIN_EVENT)){
+					glSurfaceView.resetBall();
 					level++;
 					createBricks(level);
 				}
 				else{
+					level = 1;
 					GameActivity.this.finish();
 				}
 			}
@@ -80,14 +82,6 @@ public class GameActivity extends Activity {
 				glSurfaceView.addEntity(brick);
 			}
 		glSurfaceView.addEntity(new SpawnerEntity());
-
-		last_music_pos = 0;
-		event_receiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				GameActivity.this.finish();
-			}
-		};
 	}
 	
 	@Override

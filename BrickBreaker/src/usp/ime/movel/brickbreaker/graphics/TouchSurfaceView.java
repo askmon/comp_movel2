@@ -14,6 +14,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import usp.ime.movel.brickbreaker.GameActivity;
 import usp.ime.movel.brickbreaker.R;
+import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.game.Entity;
 import usp.ime.movel.brickbreaker.game.EntityVisitor;
 import android.content.Context;
@@ -42,6 +43,8 @@ public class TouchSurfaceView extends GLSurfaceView {
 	private Queue<Entity> to_be_removed, to_be_added;
 
 	private LifeDisplay life_display;
+	
+	private BallEntity ball;
 
 	public static final float TIME_PER_FRAME = 1000.0f / 30.0f;
 
@@ -309,5 +312,16 @@ public class TouchSurfaceView extends GLSurfaceView {
 				screenHeight - e.getY(p));
 		renderer.touchActionDown(e.getPointerId(p), position[0],
 				position[1]);
+	}
+	
+	public void resetBall() {	
+		visitEntities(BallEntity.class, new EntityVisitor() {
+			@Override
+			public void visit(Entity entity) {
+				ball = (BallEntity) entity;
+			}
+		});
+		ball.getSprite().getGeometry().setPosition(0f, 0f);
+		ball.setInitialSpeed();
 	}
 }

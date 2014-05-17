@@ -91,7 +91,7 @@ public class BallEntity extends Entity {
 		annie_time--;
 	}
 
-	private void setInitialSpeed() {
+	public void setInitialSpeed() {
 		speed_x = 0.0f;
 		speed_y = -1.0f;
 	}
