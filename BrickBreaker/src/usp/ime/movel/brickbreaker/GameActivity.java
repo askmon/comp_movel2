@@ -64,15 +64,14 @@ public class GameActivity extends Activity {
 
 	private void createBricks(int level) {
 		Random rand = new Random(); 
-		Double pickedNumber;
 		for (int i = 0; i < 5; i++)
 			for (int j = 0; j < 10; j++) {
 				BrickEntity brick;
-				pickedNumber = rand.nextDouble();
-				if (pickedNumber < 0.7/((float)level))
+				double brickType = ((float)level/20.0f) + rand.nextDouble();
+				if (brickType < 0.7)
 					brick = BrickEntity.makeZombie(-0.45f + j / 10.0f,
 							0.2f + i / 10.0f);
-				else if (pickedNumber >= 0.7/((float)level) && pickedNumber <= 0.9)
+				else if (brickType >= 0.7 && brickType <= 0.9)
 					brick = BrickEntity.makeWitch(-0.45f + j / 10.0f,
 							0.2f + i / 10.0f);
 				else
