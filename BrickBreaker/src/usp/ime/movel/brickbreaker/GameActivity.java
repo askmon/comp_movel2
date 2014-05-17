@@ -5,6 +5,7 @@ import java.util.Random;
 import usp.ime.movel.brickbreaker.game.BallEntity;
 import usp.ime.movel.brickbreaker.game.BatEntity;
 import usp.ime.movel.brickbreaker.game.BrickEntity;
+import usp.ime.movel.brickbreaker.game.SpawnerEntity;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -63,14 +64,14 @@ public class GameActivity extends Activity {
 
 	private void createBricks(int level) {
 		Random rand = new Random(); 
-		Double pickedNumber = rand.nextDouble();
 		for (int i = 0; i < 5; i++)
 			for (int j = 0; j < 10; j++) {
 				BrickEntity brick;
-				if (pickedNumber < 0.7/level)
+				double brickType = ((float)level/20.0f) + rand.nextDouble();
+				if (brickType < 0.7)
 					brick = BrickEntity.makeZombie(-0.45f + j / 10.0f,
 							0.2f + i / 10.0f);
-				else if (pickedNumber >= 0.7/level && pickedNumber <= 0.9)
+				else if (brickType >= 0.7 && brickType <= 0.9)
 					brick = BrickEntity.makeWitch(-0.45f + j / 10.0f,
 							0.2f + i / 10.0f);
 				else
@@ -78,6 +79,15 @@ public class GameActivity extends Activity {
 							0.2f + i / 10.0f);
 				glSurfaceView.addEntity(brick);
 			}
+		glSurfaceView.addEntity(new SpawnerEntity());
+
+		last_music_pos = 0;
+		event_receiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				GameActivity.this.finish();
+			}
+		};
 	}
 	
 	@Override
