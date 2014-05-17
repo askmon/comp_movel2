@@ -16,6 +16,7 @@ public class BallEntity extends Entity {
 
 	private int annie_time = 0;
 	private int levi_time = 0;
+	private int armor_time = 0;
 	
 	private MediaPlayer ploc = null;
 	private MediaPlayer fall = null;
@@ -91,6 +92,7 @@ public class BallEntity extends Entity {
 		
 		annie_time--;
 		levi_time--;
+		armor_time--;
 	}
 
 	public void setInitialSpeed() {
@@ -140,8 +142,12 @@ public class BallEntity extends Entity {
 		}
 		if(levi_time > 0)
 			brick.inflictDamage(damage * 2, old_spd_x, old_spd_y);
-		else
+		else if(armor_time > 0){
+			brick.inflictDamage(0, old_spd_x, old_spd_y);
+		}
+		else{
 			brick.inflictDamage(damage, old_spd_x, old_spd_y);
+		}
 	}
 
 	private void collideWithBat(Geometry bat_geom) {
@@ -181,5 +187,13 @@ public class BallEntity extends Entity {
 	
 	public void setLevi(int time) {
 		levi_time = time;
+	}
+	
+	public int getArmor() {
+		return armor_time;
+	}
+	
+	public void setArmor(int time) {
+		armor_time = time;
 	}
 }

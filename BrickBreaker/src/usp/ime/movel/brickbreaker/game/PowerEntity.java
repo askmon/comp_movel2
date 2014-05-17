@@ -74,11 +74,12 @@ public class PowerEntity extends Entity {
 	private void addRandomPower(TouchSurfaceView view, BatEntity bat) {
 		Random rand = new Random(); 
 		Double pickedNumber = rand.nextDouble();
-		if(pickedNumber < 0.33){
+		if(pickedNumber < 0.25){
 			bat.setMikasa(295);
 			view.addEntity(TypePowerEntity.makeMikasa(295));
+			return;
 		}
-		else if(pickedNumber < 0.66){
+		else if(pickedNumber < 0.5){
 			view.visitEntities(BallEntity.class, new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
@@ -87,9 +88,10 @@ public class PowerEntity extends Entity {
 			});
 			setAnnieBall((BallEntity)this_entity);
 			view.addEntity(TypePowerEntity.makeAnnie(200));
+			return;
 		}
 		
-		else{
+		else if(pickedNumber < 0.75){
 			view.visitEntities(BallEntity.class, new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
@@ -98,6 +100,19 @@ public class PowerEntity extends Entity {
 			});
 			setLeviBall((BallEntity)this_entity);
 			view.addEntity(TypePowerEntity.makeLevi(290));
+			return;
+		}
+		
+		else {
+			view.visitEntities(BallEntity.class, new EntityVisitor() {
+				@Override
+				public void visit(Entity entity) {
+					this_entity = (BallEntity) entity;
+				}
+			});
+			setArmorBall((BallEntity)this_entity);
+			view.addEntity(TypePowerEntity.makeArmor(240));
+			return;
 		}
 	}
 
@@ -126,6 +141,10 @@ public class PowerEntity extends Entity {
 	
 	private void setLeviBall(BallEntity ball) {
 		ball.setLevi(290);
+	}
+	
+	private void setArmorBall(BallEntity ball) {
+		ball.setArmor(240);
 	}
 	
 	@Override

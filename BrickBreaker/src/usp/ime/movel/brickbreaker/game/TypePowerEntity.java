@@ -12,6 +12,7 @@ public class TypePowerEntity extends Entity {
 	public final static int MIKASA_POWER = 1;
 	public final static int ANNIE_POWER = 2;
 	public final static int LEVI_POWER = 3;
+	public final static int ARMOR_POWER = 4;
 
 	private TypePowerEntity(int type, int time) {
 		super(new Sprite(new Geometry(0.0f, -0.875f, 0.1f, 0.1f),
@@ -30,15 +31,21 @@ public class TypePowerEntity extends Entity {
 	public static TypePowerEntity makeLevi(int time) {
 		return new TypePowerEntity(LEVI_POWER, time);
 	}
+	
+	public static TypePowerEntity makeArmor(int time) {
+		return new TypePowerEntity(ARMOR_POWER, time);
+	}
 
 	private static int getTexId(int type) {
 		switch(type){
-		case 1:
+		case MIKASA_POWER:
 			return R.drawable.mikasa;
-		case 2:
+		case ANNIE_POWER:
 			return R.drawable.annie;
-		case 3:
+		case LEVI_POWER:
 			return R.drawable.levi;
+		case ARMOR_POWER:
+			return R.drawable.armored;
 		}
 		return 0;
 	}
