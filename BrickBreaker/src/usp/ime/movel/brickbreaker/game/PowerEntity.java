@@ -74,11 +74,11 @@ public class PowerEntity extends Entity {
 	private void addRandomPower(TouchSurfaceView view, BatEntity bat) {
 		Random rand = new Random(); 
 		Double pickedNumber = rand.nextDouble();
-		if(pickedNumber < 0.5){
+		if(pickedNumber < 0.33){
 			bat.setMikasa(295);
 			view.addEntity(TypePowerEntity.makeMikasa(295));
 		}
-		else{
+		else if(pickedNumber < 0.66){
 			view.visitEntities(BallEntity.class, new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
@@ -87,6 +87,17 @@ public class PowerEntity extends Entity {
 			});
 			setAnnieBall((BallEntity)this_entity);
 			view.addEntity(TypePowerEntity.makeAnnie(200));
+		}
+		
+		else{
+			view.visitEntities(BallEntity.class, new EntityVisitor() {
+				@Override
+				public void visit(Entity entity) {
+					this_entity = (BallEntity) entity;
+				}
+			});
+			setLeviBall((BallEntity)this_entity);
+			view.addEntity(TypePowerEntity.makeLevi(290));
 		}
 	}
 
@@ -111,6 +122,10 @@ public class PowerEntity extends Entity {
 	
 	private void setAnnieBall(BallEntity ball) {
 		ball.setAnnie(200);
+	}
+	
+	private void setLeviBall(BallEntity ball) {
+		ball.setLevi(290);
 	}
 	
 	@Override
