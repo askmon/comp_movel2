@@ -61,7 +61,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	// --------------------------------------------------------------------------
 
 	enum ScoreKey {
-		ID("INTEGER PRIMARY KEY AUTOINCREMENT"), SCORE("INT");
+		ID("INTEGER PRIMARY KEY AUTOINCREMENT"), SCORE("INTEGER");
 		private String columnName;
 		private String type;
 		private Method getter;
@@ -79,9 +79,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					setter = method;
 			}
 			if (getter == null)
-				Log.e("IncidentKey", "Not found: " + "get" + this.columnName);
+				Log.e("ScoreKey", "Not found: " + "get" + this.columnName);
 			if (setter == null)
-				Log.e("IncidentKey", "Not found: " + "set" + this.columnName);
+				Log.e("ScoreKey", "Not found: " + "set" + this.columnName);
 		}
 
 		String getColumnName() {
@@ -120,32 +120,23 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
-		// 3. go over each row, build book and add it to list
-		Score score = null;
+		// 3. go over each row
+		Score higherScore = null;
 		if (cursor.moveToFirst()) {
-			score = new Score();
+			higherScore = new Score();
 			ScoreKey[] keys = ScoreKey.values();
-			for (int i = 0; i < keys.length; i++) {
-				if (cursor.isNull(i))
-					continue;
-				else if (keys[i].getType() == "INTEGER")
-					keys[i].set(score, cursor.getString(i));
-			}
+			if (!cursor.isNull(0))
+				keys[1].set(higherScore, cursor.getInt(0));
 		}
 
-		Log.d("getHigherScore()", score.toString());
+		Log.d("getHigherScore()", higherScore.toString());
 
-		return score;
+		return higherScore;
 	}
 
 	private ContentValues makeValues(Score score) {
 		ContentValues values = new ContentValues();
-		ScoreKey[] keys = ScoreKey.values();
-		for (int i = 1; i < keys.length; i++) {
-			if (keys[i].getType() == "INTEGER")
-				values.put(keys[i].getColumnName(),
-						(Integer) keys[i].get(score));
-		}
+		values.put("score", score.getScore());
 		return values;
 	}
 
@@ -160,7 +151,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 										// values = column values
 		// 3. close
 		db.close();
-		Log.d("addIncident()", Long.toString(id));
+		Log.d("addScore()", Long.toString(id));
 		return Long.valueOf(id);
 	}
 
@@ -175,7 +166,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 																	// args
 		// 4. close
 		db.close();
-		Log.d("updateIncident()", score.getId().toString());
+		Log.d("updateScore()", score.getId().toString());
 	}
 
 	public void removeScore(Score score) {
