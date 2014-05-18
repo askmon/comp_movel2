@@ -79,7 +79,7 @@ public class PowerEntity extends Entity {
 			view.addEntity(TypePowerEntity.makeMikasa(295));
 			return;
 		}
-		else if(pickedNumber < 0.5){
+		else if(pickedNumber < 0.45){
 			view.visitEntities(BallEntity.class, new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
@@ -91,7 +91,7 @@ public class PowerEntity extends Entity {
 			return;
 		}
 		
-		else if(pickedNumber < 0.75){
+		else if(pickedNumber < 0.70){
 			view.visitEntities(BallEntity.class, new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
@@ -103,7 +103,7 @@ public class PowerEntity extends Entity {
 			return;
 		}
 		
-		else {
+		else if (pickedNumber < 0.95){
 			view.visitEntities(BallEntity.class, new EntityVisitor() {
 				@Override
 				public void visit(Entity entity) {
@@ -114,6 +114,10 @@ public class PowerEntity extends Entity {
 			view.addEntity(TypePowerEntity.makeArmor(240));
 			return;
 		}
+		else {
+			view.getLifeDisplay().changeCount(1);
+		}
+			
 	}
 
 	private void destroy(TouchSurfaceView view){
