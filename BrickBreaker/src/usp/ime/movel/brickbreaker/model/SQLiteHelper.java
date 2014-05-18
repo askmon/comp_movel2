@@ -128,7 +128,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			for (int i = 0; i < keys.length; i++) {
 				if (cursor.isNull(i))
 					continue;
-				else if (keys[i].getType() == "INT")
+				else if (keys[i].getType() == "INTEGER")
 					keys[i].set(score, cursor.getString(i));
 			}
 		}
@@ -142,7 +142,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		ScoreKey[] keys = ScoreKey.values();
 		for (int i = 1; i < keys.length; i++) {
-			if (keys[i].getType() == "INT")
+			if (keys[i].getType() == "INTEGER")
 				values.put(keys[i].getColumnName(),
 						(Integer) keys[i].get(score));
 		}

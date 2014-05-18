@@ -2,7 +2,7 @@ package usp.ime.movel.brickbreaker.model;
 
 public class Score {
 	private Long id = null;
-	private int score = 0;
+	private Integer score = 0;
 
 	public Score() {
 	}
@@ -15,11 +15,11 @@ public class Score {
 		this.id = id;
 	}
 
-	public int getScore() {
+	public Integer getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(Integer score) {
 		this.score = score;
 	}
 }
