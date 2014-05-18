@@ -61,7 +61,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	// --------------------------------------------------------------------------
 
 	enum ScoreKey {
-		ID("INTEGER PRIMARY KEY AUTOINCREMENT"), SCORE("LONG");
+		ID("INTEGER PRIMARY KEY AUTOINCREMENT"), SCORE("INT");
 		private String columnName;
 		private String type;
 		private Method getter;
@@ -128,7 +128,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			for (int i = 0; i < keys.length; i++) {
 				if (cursor.isNull(i))
 					continue;
-				else if (keys[i].getType() == "LONG")
+				else if (keys[i].getType() == "INT")
 					keys[i].set(score, cursor.getString(i));
 			}
 		}
@@ -142,9 +142,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		ScoreKey[] keys = ScoreKey.values();
 		for (int i = 1; i < keys.length; i++) {
-			if (keys[i].getType() == "LONG")
+			if (keys[i].getType() == "INT")
 				values.put(keys[i].getColumnName(),
-						(Long) keys[i].get(score));
+						(Integer) keys[i].get(score));
 		}
 		return values;
 	}

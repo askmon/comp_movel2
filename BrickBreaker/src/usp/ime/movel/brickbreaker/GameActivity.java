@@ -9,7 +9,6 @@ import usp.ime.movel.brickbreaker.game.SpawnerEntity;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
 import usp.ime.movel.brickbreaker.model.SQLiteHelper;
 import usp.ime.movel.brickbreaker.model.Score;
-import android.R;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,8 +26,11 @@ public class GameActivity extends Activity {
 	private int last_music_pos;
 	private BroadcastReceiver event_receiver;
 	private TextView score;
+	private TextView highscore;
 	private int points;
 	private int level = 1;
+	private SQLiteHelper db;
+
 
 	public final static String DEFEAT_EVENT = "usp.ime.movel.brickbreaker.defeat_event";
 	public static final String WIN_EVENT = "usp.ime.movel.brickbreaker.win_event";
@@ -39,7 +41,11 @@ public class GameActivity extends Activity {
 		setContentView(R.layout.game);
 		glSurfaceView = (TouchSurfaceView) findViewById(R.id.gamescreen);
 		score = (TextView) findViewById(R.id.score);
-		score.setText("Score: " + points);
+		highscore = (TextView) findViewById(R.id.highscore);
+		highscore.setText("Score: " + points);
+		db = new SQLiteHelper(this);
+		highscore.setText("Highscore: " + db.getHigherScore());
+		
 		// setContentView(glSurfaceView);
 
 		glSurfaceView.setFocusableInTouchMode(true);
@@ -61,8 +67,10 @@ public class GameActivity extends Activity {
 				}
 				else{
 					Score newScore = new Score();
-					SQLiteHelper db = new SQLiteHelper(context);
-					newScore.setScore(Long.parseLong(score.getText().toString()));
+					db = new SQLiteHelper(context);
+					newScore.setScore(points);
+					db.addScore(newScore);
+					db.close();
 					level = 1;
 					GameActivity.this.finish();
 				}
