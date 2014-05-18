@@ -7,6 +7,9 @@ import usp.ime.movel.brickbreaker.game.BatEntity;
 import usp.ime.movel.brickbreaker.game.BrickEntity;
 import usp.ime.movel.brickbreaker.game.SpawnerEntity;
 import usp.ime.movel.brickbreaker.graphics.TouchSurfaceView;
+import usp.ime.movel.brickbreaker.model.SQLiteHelper;
+import usp.ime.movel.brickbreaker.model.Score;
+import android.R;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -57,6 +60,9 @@ public class GameActivity extends Activity {
 					createBricks(level);
 				}
 				else{
+					Score newScore = new Score();
+					SQLiteHelper db = new SQLiteHelper(context);
+					newScore.setScore(Long.parseLong(score.getText().toString()));
 					level = 1;
 					GameActivity.this.finish();
 				}
