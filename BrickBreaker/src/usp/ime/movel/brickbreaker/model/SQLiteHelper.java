@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
@@ -111,7 +112,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	}
 
 	// Get All Books
-	public Score getHigherScore() {
+	public Score getScore() {
 
 		// 1. build the query
 		String query = "SELECT MAX(score) FROM " + SCORE_TABLE;
@@ -125,11 +126,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			higherScore = new Score();
 			ScoreKey[] keys = ScoreKey.values();
+			Log.d("coco", ScoreKey.values().toString());
 			if (!cursor.isNull(0))
 				keys[1].set(higherScore, cursor.getInt(0));
+				Log.d("coco", ""+cursor.getInt(0));
 		}
 
-		Log.d("getHigherScore()", higherScore.toString());
+		Log.d("getHigherScore()", ""+higherScore.getScore());
 
 		return higherScore;
 	}
@@ -151,7 +154,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 										// values = column values
 		// 3. close
 		db.close();
-		Log.d("addScore()", Long.toString(id));
+		Log.d("addScore()", Long.toString(score.getScore()));
 		return Long.valueOf(id);
 	}
 
@@ -177,6 +180,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 				+ " = ?", new String[] { String.valueOf(score.getId()) });
 		// 3. close
 		db.close();
+	}
+	
+	public int getMaxColumnData() {
+		SQLiteDatabase db = this.getReadableDatabase();
+	    final SQLiteStatement stmt = db
+	            .compileStatement("SELECT MAX(score) FROM " + SCORE_TABLE);
+
+	    return (int) stmt.simpleQueryForLong();
 	}
 
 }

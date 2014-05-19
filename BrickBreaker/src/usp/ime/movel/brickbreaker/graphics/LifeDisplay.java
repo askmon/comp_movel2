@@ -22,7 +22,7 @@ public class LifeDisplay extends Sprite {
 	
 	@Override
 	public void draw(GL10 gl) {
-		getGeometry().setPosition(-view.getSpaceWidth()+0.1f, view.getSpaceHeight()-0.125f);
+		getGeometry().setPosition(-view.getSpaceWidth()+0.1f, view.getSpaceHeight()-0.175f);
 		for (int i = 0; i < count; i++) {
 			super.draw(gl);
 			getGeometry().translate(0.06f, 0.0f);

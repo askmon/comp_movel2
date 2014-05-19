@@ -30,6 +30,7 @@ public class GameActivity extends Activity {
 	private int points;
 	private int level = 1;
 	private SQLiteHelper db;
+	private int pontos = 0;
 
 
 	public final static String DEFEAT_EVENT = "usp.ime.movel.brickbreaker.defeat_event";
@@ -42,9 +43,10 @@ public class GameActivity extends Activity {
 		glSurfaceView = (TouchSurfaceView) findViewById(R.id.gamescreen);
 		score = (TextView) findViewById(R.id.score);
 		highscore = (TextView) findViewById(R.id.highscore);
-		highscore.setText("Score: " + points);
 		db = new SQLiteHelper(this);
-		highscore.setText("Highscore: " + db.getHigherScore());
+		score.setText("Score: " + points);
+		System.out.println("OI " + db.getMaxColumnData());
+		highscore.setText("Highscore: " + db.getMaxColumnData());
 		
 		// setContentView(glSurfaceView);
 
@@ -68,7 +70,7 @@ public class GameActivity extends Activity {
 				else{
 					Score newScore = new Score();
 					db = new SQLiteHelper(context);
-					newScore.setScore(points);
+					newScore.setScore(pontos);
 					db.addScore(newScore);
 					db.close();
 					level = 1;
@@ -127,5 +129,7 @@ public class GameActivity extends Activity {
 
 	public void setScore(int points) {
 		this.score.setText("Score: " + points);
+		if(points != 0)
+			pontos = points;
 	}
 }
