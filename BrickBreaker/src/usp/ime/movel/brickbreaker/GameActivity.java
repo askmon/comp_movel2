@@ -56,6 +56,7 @@ public class GameActivity extends Activity {
 		BrickEntity.resetCount();
 
 		createBricks(level);
+		createSpawner();
 
 		last_music_pos = 0;
 		event_receiver = new BroadcastReceiver() {
@@ -99,6 +100,14 @@ public class GameActivity extends Activity {
 									0.2f + i / 10.0f);
 						glSurfaceView.addEntity(brick);
 					}
+			}
+		});
+	}
+	
+	private void createSpawner() {
+		glSurfaceView.queueEvent(new Runnable() {
+			@Override
+			public void run() {
 				glSurfaceView.addEntity(new SpawnerEntity());
 			}
 		});
