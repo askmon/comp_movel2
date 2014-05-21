@@ -28,7 +28,11 @@ public class BallEntity extends Entity {
 	public BallEntity() {
 		super(new Sprite(new Geometry(0.0f, 0.0f, 0.02f, 0.02f),
 				R.drawable.soccer));
-		setInitialSpeed();
+		resetCooldown();
+	}
+	
+	public void resetCooldown() {
+		cooldown = (int)(2000.0f/TouchSurfaceView.TIME_PER_FRAME);
 	}
 	
 	public float getSpeed() {

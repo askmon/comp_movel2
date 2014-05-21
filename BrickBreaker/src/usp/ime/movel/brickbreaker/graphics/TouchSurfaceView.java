@@ -314,14 +314,19 @@ public class TouchSurfaceView extends GLSurfaceView {
 				position[1]);
 	}
 	
-	public void resetBall() {	
-		visitEntities(BallEntity.class, new EntityVisitor() {
+	public void resetBall() {
+		queueEvent(new Runnable() {
 			@Override
-			public void visit(Entity entity) {
-				ball = (BallEntity) entity;
+			public void run() {
+				visitEntities(BallEntity.class, new EntityVisitor() {
+					@Override
+					public void visit(Entity entity) {
+						ball = (BallEntity) entity;
+					}
+				});
+				ball.getSprite().getGeometry().setPosition(0f, 0f);
+				ball.resetCooldown();
 			}
 		});
-		ball.getSprite().getGeometry().setPosition(0f, 0f);
-		ball.setInitialSpeed();
 	}
 }

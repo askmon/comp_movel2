@@ -32,7 +32,6 @@ public class GameActivity extends Activity {
 	private SQLiteHelper db;
 	private int pontos = 0;
 
-
 	public final static String DEFEAT_EVENT = "usp.ime.movel.brickbreaker.defeat_event";
 	public static final String WIN_EVENT = "usp.ime.movel.brickbreaker.win_event";
 
@@ -47,7 +46,7 @@ public class GameActivity extends Activity {
 		score.setText("Score: " + points);
 		System.out.println("OI " + db.getMaxColumnData());
 		highscore.setText("Highscore: " + db.getMaxColumnData());
-		
+
 		// setContentView(glSurfaceView);
 
 		glSurfaceView.setFocusableInTouchMode(true);
@@ -62,12 +61,11 @@ public class GameActivity extends Activity {
 		event_receiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if(intent.getAction().equals(WIN_EVENT)){
+				if (intent.getAction().equals(WIN_EVENT)) {
 					glSurfaceView.resetBall();
 					level++;
 					createBricks(level);
-				}
-				else{
+				} else {
 					Score newScore = new Score();
 					db = new SQLiteHelper(context);
 					newScore.setScore(pontos);
@@ -80,26 +78,32 @@ public class GameActivity extends Activity {
 		};
 	}
 
-	private void createBricks(int level) {
-		Random rand = new Random(); 
-		for (int i = 0; i < 5; i++)
-			for (int j = 0; j < 10; j++) {
-				BrickEntity brick;
-				double brickType = ((float)level/20.0f) + rand.nextDouble();
-				if (brickType < 0.7)
-					brick = BrickEntity.makeZombie(-0.45f + j / 10.0f,
-							0.2f + i / 10.0f);
-				else if (brickType >= 0.7 && brickType <= 0.9)
-					brick = BrickEntity.makeWitch(-0.45f + j / 10.0f,
-							0.2f + i / 10.0f);
-				else
-					brick = BrickEntity.makeTank(-0.45f + j / 10.0f,
-							0.2f + i / 10.0f);
-				glSurfaceView.addEntity(brick);
+	private void createBricks(final int level) {
+		glSurfaceView.queueEvent(new Runnable() {
+			@Override
+			public void run() {
+				Random rand = new Random();
+				for (int i = 0; i < 5; i++)
+					for (int j = 0; j < 10; j++) {
+						BrickEntity brick;
+						double brickType = ((float) level / 20.0f)
+								+ rand.nextDouble();
+						if (brickType < 0.7)
+							brick = BrickEntity.makeZombie(-0.45f + j / 10.0f,
+									0.2f + i / 10.0f);
+						else if (brickType >= 0.7 && brickType <= 0.9)
+							brick = BrickEntity.makeWitch(-0.45f + j / 10.0f,
+									0.2f + i / 10.0f);
+						else
+							brick = BrickEntity.makeTank(-0.45f + j / 10.0f,
+									0.2f + i / 10.0f);
+						glSurfaceView.addEntity(brick);
+					}
+				glSurfaceView.addEntity(new SpawnerEntity());
 			}
-		glSurfaceView.addEntity(new SpawnerEntity());
+		});
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -129,7 +133,7 @@ public class GameActivity extends Activity {
 
 	public void setScore(int points) {
 		this.score.setText("Score: " + points);
-		if(points != 0)
+		if (points != 0)
 			pontos = points;
 	}
 }
