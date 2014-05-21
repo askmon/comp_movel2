@@ -14,7 +14,7 @@ public class SpawnerEntity extends Entity {
 	@Override
 	public void onUpdate(TouchSurfaceView view) {
 		tempo++;
-		if(tempo >= 300){
+		if(tempo >= 360){
 			tempo = 0;
 			view.addEntity(new PowerEntity(view.getSpaceWidth()));
 		}
